@@ -13,7 +13,14 @@ nunjucks.configure('views', {
 
 app.use(express.static('assets'))
 app.get('/', home)
+app.get('/ipas', ipas)
 
 function home(req, res) {
   res.render('index.html')
+}
+function ipas(req, res) {
+  res.render('ipas.html')
+}
+function signed(req, res) {
+  res.render('signed.html')
 }
