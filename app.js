@@ -15,6 +15,8 @@ app.use(express.static('assets'))
 app.get('/', home)
 app.get('/ipas', ipas)
 app.get('/signed', signed)
+app.get('/betas', betas)
+app.get('/jailbreaks', jailbreaks)
 
 function home(req, res) {
   res.render('index.html')
@@ -24,4 +26,10 @@ function ipas(req, res) {
 }
 function signed(req, res) {
   res.render('signed.html')
+}
+function betas(req, res) {
+  res.render('betas.html')
+}
+function jailbreaks(req, res) {
+  res.render('jailbreaks.html')
 }
