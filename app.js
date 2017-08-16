@@ -19,6 +19,8 @@ app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
 app.get('/upload', upload)
 app.get('/credits', credits)
+app.get('/cydia', cydia)
+
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -40,4 +42,7 @@ function upload(req, res) {
 }
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
+}
+function cydia(req, res) {
+  res.render('cydia.html', {title: 'Cydia Impactor - iOS Haven'})
 }
