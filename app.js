@@ -44,12 +44,9 @@ function upload(req, res) {
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
 }
-function cydia(req, res) {
-  res.render('cydia.html', {title: 'Cydia Impactor - iOS Haven'})
-}
 function test(req, res) {
   res.render('test.html')
 }
 function help(req, res) {
-  res.render('help.html')
+  res.render('help.html', {title: 'Help - iOS Haven'})
 }
