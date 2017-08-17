@@ -21,6 +21,7 @@ app.get('/upload', upload)
 app.get('/credits', credits)
 app.get('/cydia', cydia)
 app.get('/test', test)
+app.get('/help', help)
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -29,7 +30,7 @@ function ipas(req, res) {
   res.render('ipas.html', {title: 'IPA Library - iOS Haven'})
 }
 function signed(req, res) {
-  res.render('signed.html', {title: 'Signed IPAs - iOS Haven'})
+  res.render('signed.html', {title: 'Signed Apps - iOS Haven'})
 }
 function betas(req, res) {
   res.render('betas.html', {title: 'Beta Downloads - iOS Haven '})
@@ -48,4 +49,7 @@ function cydia(req, res) {
 }
 function test(req, res) {
   res.render('test.html')
+}
+function help(req, res) {
+  res.render('help.html')
 }
