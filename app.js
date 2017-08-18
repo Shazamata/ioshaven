@@ -21,7 +21,6 @@ app.get('/upload', upload)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
-app.get('/yalu', yalu)
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -49,7 +48,4 @@ function test(req, res) {
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
-}
-function yalu(req, res) {
-  res.render('yalu.html', {title: 'Yalu - iOS Haven'})
 }
