@@ -19,7 +19,6 @@ app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
 app.get('/upload', upload)
 app.get('/credits', credits)
-app.get('/cydia', cydia)
 app.get('/test', test)
 app.get('/help', help)
 
