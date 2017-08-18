@@ -1,0 +1,129 @@
+{% extends 'layouts.html' %}
+
+
+
+{% block body %}
+{{ title }}
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<center><pre><font size="5" color="grey">NOTE: THIS IS A RE-UPLOAD OF <a href="https://yalu.qwertyoruiop.com/">https://yalu.qwertyoruiop.com/</a> AND IS NOT OFFICIAL. </font>
+
+<hr>
+iPhone 7 10.1.1 <b>beta4</b>
+<i>now with substrate & iOS 10.0.x support</i>
+extra_recipe+yaluX by xerub & ianbeer
+<a href="https://drive.google.com/uc?export=download&id=0B5XXJJr-K_FAdnc3TmxVMkpQdVE">download</a>
+
+<hr>
+
+beta7
+<b>for all iOS 10 64 bit devices except iPhone7</b>
+
+<h1>fuck icrackuridevice & fce365</h1>
+
+<a href=https://github.com/kpwn/yalu102>code</a>
+<b><a href="https://drive.google.com/uc?export=download&id=0B5XXJJr-K_FAZzY2U2lJRWZUYVk">ipa (cydia impactor)</a></b>
+sha1 4afa99d4b568aa8cbb9ac61fddd584111fed79c5
+
+
+fixes ipad air and mini 4
+
+
+
+beta6:
+- fixes some issues some device/fw combos were having with the tfp0 / nonceEnabler patch
+
+beta5:
+- placebo effect
+
+beta4:
+- fixes the vulnerability used to pwn the kernel
+- dropbear now listens on 127.0.0.1 rather than 0.0.0.0, fixing a security issue
+- tfp0 added
+- nonceEnabler built in
+- JITSupport is working
+
+beta3:
+- fix apple watch
+
+beta2:
+- iPhone 5s/6 support
+
+beta1:
+- mobilesubstrate works
+
+
+licensed under wtfpl
+
+<hr/>
+
+
+
+<b>yalu + mach_portal</b>
+<i>for <strike>iOS 8.4.1</strike> iOS 10.(1(.1))</i>
+
+by ian beer (sb/root/kern) & qwertyoruiop (hypv/memprot)
+
+task_for_pid_0 is sooo <strike>2014</strike> 2017 (6s)
+that means __TEXT_EXEC, for the researchers out there! (6s)
+
+on 7, things are different. but ya still got __DATA_CONST!
+
+also decided to not obfuscate
+
+no warranty implied blah blah blah i am not a lawyer
+
+beta1: glitchy, mobilesubstrate not working (on purpose), super fucking unstable, glitchy again
+
+<b>(!!!) DO NOT INSTALL UNLESS YOU KNOW WHAT YOU ARE DOING (!!!)</b>
+
+this is likely (nah not really but pretend it is) to fuck your device
+up forcing you to restore, so better safe than sorry. wait for stable release
+
+DO NOT DOWNLOAD THIS SOFTWARE FROM OTHER SOURCES OTHER THAN THESE LINKS UNDER ANY CIRCUMSTANCE.
+IT IS VERY EASY TO BACKDOOR THIS SORT OF SOFTWARE TO CONTAIN MALWARE. PLEASE BE EXTREMELY CAREFUL.
+THESE MIRRORS ARE TRUSTED, BUT STILL CHECK SHA
+
+
+<b>changelog</b>
+beta4-1:
+- it may now work (in theory/maybe). It may fail a few times; hard reset with home(pre-i7)/volume down(i7) + power
+
+beta4:
+- added mobilesubstrate support
+- device support still unchanged
+- procexp hangs rather than panicing
+- OS should be way more stable
+- it may have some new issues. If OS does not come back after reloading, reboot and try again.
+
+planned features for next release (gamma):
+- more devices supported
+- fix procexp
+- fix mmap() hook amfi checks
+- mobilesubstrate works thanks to a dirty hack. better solution?
+
+<a href="https://drive.google.com/uc?export=download&id=0B5XXJJr-K_FAWmMzbk8zUGkyejg">mirror (my own) - beta3</a>
+<a href="https://drive.google.com/uc?export=download&id=0B5XXJJr-K_FAVGNENUtFR2l6aHc">mirror (my own) - beta4-1 - BROKEN</a>
+$ shasum -a 256 mach_portal+yalu-b4-1.ipa
+f34ba1bebf02b265a871158e778596ee2ff1547a69fdb687d911897b7b7b22c5
+
+<a href="http://www.cydiaimpactor.com">cydia impactor</a>
+
+
+my patches and additions on top of Ian's code are licensed under the ABSE ("Anyone But Stefan Esser") license.
+note that an additional exception to the license is added, forbidding use/redistribution of said content to his
+trainees as well, but only when in a 5 mile radius from "Stefan Esser" or while holding any sort of (video)conference/chat with him.
+
+note that this license will only be used as long as what would capstone decode / that one other arm64 ida
+plugin thing by i0n1c ("Stefan Esser") are not under the MIT license.
+afterwards, all exceptions are cleared and basically WTFPL applies
+
+if you need a copy of the rest of the license feel free to google it or something.
+
+
+(c) KJC Research
+</pre></center>
+
+{% endblock %}
