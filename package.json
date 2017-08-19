@@ -23,6 +23,13 @@
     "socket.io": "^2.0.3"
   },
   "dependencies": {
-    "nunjucks": "^3.0.1"
+    "aws-sdk": "^2.100.0",
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "net": "^1.0.2",
+    "nunjucks": "^3.0.1",
+    "popper": "^1.0.0",
+    "tls": "0.0.1",
+    "vue": "^2.4.2"
   }
 }
