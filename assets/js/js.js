@@ -236,17 +236,17 @@ module.exports = function normalizeComponent (
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(2121)
+  __webpack_require__(2126)
 }
 var Component = __webpack_require__(11)(
   /* script */
   __webpack_require__(2123),
   /* template */
-  __webpack_require__(2124),
+  __webpack_require__(2128),
   /* styles */
   injectStyle,
   /* scopeId */
-  null,
+  "data-v-7bd41b98",
   /* moduleIdentifier (server only) */
   null
 )
@@ -275,53 +275,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 2121:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(2122);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(9)("4a3c2810", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 2122:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(8)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\nimg {\n  cursor: default;\n  pointer-events: none;\n  width: 192px;\n  height: 192px;\n}\n.center {\n  text-align: center;\n}\n.height {\n  height: 200px;\n  overflow-y: auto;\n}\n.center-block {\n  display: block;\n  margin: 0 auto;\n}\n.container-2 {\n  display: flex;\n  justify-content: center;\n}\n.container-2-box {\n  width: 20%;\n  border: 1px #ffffff solid;\n  padding: 20px 25px;\n  margin: 40px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ 2123:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -341,12 +301,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 2124:
+/***/ 2125:
+/***/ (function(module, exports) {
+
+module.exports = [{"title":"Instagram ++","image":"/app-icons/instagram.png","version":"10.34","desc":"Instagram ++.","dl":"https://ioshaven.co"},{"title":"Instagram Rocket","image":"/app-icons/instagram.png","version":"10.34","desc":"Instagram Rocket.","dl":"http://ioshaven.co"},{"title":"Snapchat ++","image":"/app-icons/snapchat.png","version":"10.15.1","desc":"Snapchat ++.","dl":"http://ioshaven.co"},{"title":"Phantom for Snapchat","image":"/app-icons/snapchat.png","version":"10.15.1","desc":"Phantom for Snapchat.","dl":"http://ioshaven.co"},{"title":"Snapchat SCOthman","image":"/app-icons/scothman.png","version":"10.15.1","desc":"Snapchat SCOthman.","dl":"http://ioshaven.co"},{"title":"Tinder ++","image":"/app-icons/tinder.png","version":"7.5.3","desc":"Tinder ++.","dl":"http://ioshaven.co"},{"title":"Twitter ++","image":"/app-icons/twitter.png","version":"7.5.1","desc":"Twitter ++.","dl":"http://ioshaven.co"},{"title":"Youtube ++","image":"/app-icons/youtube.png","version":"12.31","desc":"Youtube ++.","dl":"http://ioshaven.co"},{"title":"Cercube 4","image":"/app-icons/youtube.png","version":"12.29","desc":"Cercube 4.","dl":"http://ioshaven.co"},{"title":"Youtube Music ++","image":"/app-icons/youtube.png","version":"1.90.2","desc":"Youtube Music++.","dl":"http://ioshaven.co"},{"title":"Facebook ++","image":"/app-icons/facebook.png","version":"137.0","desc":"Facebook ++.","dl":"http://ioshaven.co"},{"title":"WhatsApp ++","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"WhatsApp ++.","dl":"http://ioshaven.co"},{"title":"WhatsPad ++","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"WhatsPad ++.","dl":"http://ioshaven.co"},{"title":"WhatsApp Watusi","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"WhatsApp Watusi.","dl":"http://ioshaven.co"},{"title":"twitch ++","image":"/app-icons/twitch.png","version":"5.1.1","desc":"Twitch ++.","dl":"http://ioshaven.co"},{"title":"Spotify ++","image":"/app-icons/spotify.png","version":"8.4.13","desc":"Spotify ++.","dl":"http://ioshaven.co"},{"title":"SoundCloud ++","image":"/app-icons/soundcloud.png","version":"5.11","desc":"Soundcloud ++.","dl":"http://ioshaven.co"},{"title":"DownCloud Pro","image":"/app-icons/downcloud.png","version":"2.0","desc":"DownCloud.","dl":"http://ioshaven.co"},{"title":"Deezer ++","image":"/app-icons/deezer.png","version":"6.23","desc":"Deezer ++.","dl":"http://ioshaven.co"},{"title":"Napster ++","image":"/app-icons/napster.png","version":"5.11.1","desc":"Napster ++.","dl":"http://ioshaven.co"},{"title":"Pandora ++","image":"/app-icons/pandora.png","version":"8.7","desc":"Pandora ++.","dl":"http://ioshaven.co"},{"title":"Movie box ++","image":"/app-icons/moviebox.png","version":"3.7.2","desc":"Movie Box ++.","dl":"http://ioshaven.co"},{"title":"Crunchyroll ++","image":"/app-icons/crunchyroll.png","version":"3.0.8","desc":"Crunchyroll ++.","dl":"http://ioshaven.co"},{"title":"Hotspot Shield ++","image":"/app-icons/hotspot.png","version":"3.7.6","desc":"Hostspot Shield ++.","dl":"http://ioshaven.co"},{"title":"Betternet ++","image":"/app-icons/betternet.png","version":"3.3.21","desc":"Betternet ++.","dl":"http://ioshaven.co"},{"title":"NBA ++","image":"/app-icons/nba.png","version":"7.053","desc":"NBA ++.","dl":"http://ioshaven.co"},{"title":"PokeGo ++","image":"/app-icons/pogo.png","version":"2.0","desc":"PokeGo ++.","dl":"http://ioshaven.co"},{"title":"UFC ++","image":"/app-icons/ufc.png","version":"3.2","desc":"UFC ++.","dl":"http://ioshaven.co"},{"title":"123 Movies","image":"/app-icons/123.png","version":"1.0","desc":"123 Movies.","dl":"http://ioshaven.co"},{"title":"Bobby movie","image":"/app-icons/bmovie.png","version":"3.1.5","desc":"Bobby Movie","dl":"http://ioshaven.co"},{"title":"Bobby Music","image":"/app-icons/bmusic.png","version":"2.0.3","desc":"Bobby Music.","dl":"http://ioshaven.co"},{"title":"Cartoon HD","image":"/app-icons/cartoon.png","version":"2.0","desc":"Cartoon HD.","dl":"http://ioshaven.co"},{"title":"CienemaBox PB","image":"/app-icons/cb.png","version":"1.0","desc":"CinemaBox PB.","dl":"http://ioshaven.co"},{"title":"Channels","image":"/app-icons/channels.png","version":"1.3","desc":"Channels.","dl":"http://ioshaven.co"},{"title":"Live Wire","image":"/app-icons/livewire.png","version":"1.5","desc":"Live Wire.","dl":"http://ioshaven.co"},{"title":"FlickJoy","image":"/app-icons/flickjoy.png","version":"1.5","desc":"Flickjoy.","dl":"http://ioshaven.co"},{"title":"Popcorn Time","image":"/app-icons/popcorntime.png","version":"3.1.2","desc":"Popcorm Time.","dl":"http://ioshaven.co"},{"title":"Surge","image":"/app-icons/surge.png","version":"1.0.1","desc":"Surge.","dl":"http://ioshaven.co"},{"title":"MovieHD","image":"/app-icons/moviehd.png","version":"1.0","desc":"MovieHD.","dl":"http://ioshaven.co"},{"title":"ToonsNow","image":"/app-icons/toonsnow.png","version":"1.1.2","desc":"toonsnow.","dl":"http://ioshaven.co"},{"title":"Slick TV","image":"/app-icons/slicktv.png","version":"1.3","desc":"Slick TV.","dl":"http://ioshaven.co"},{"title":"Music Pocket","image":"/app-icons/musicpocket.png","version":"1.0","desc":"Music Pocket.","dl":"http://ioshaven.co"},{"title":"AudioTube","image":"/app-icons/audiotube.png","version":"1.7","desc":"AudioTube.","dl":"http://ioshaven.co"},{"title":"GBA4IOS","image":"/app-icons/gba.png","version":"2.1","desc":"GBA4IOS.","dl":"http://ioshaven.co"},{"title":"Happy Chick","image":"/app-icons/happychick.png","version":"1.5.4","desc":"Happy Chick.","dl":"http://ioshaven.co"},{"title":"HandJoy","image":"/app-icons/handjoy.png","version":"1.0","desc":"HandJoy.","dl":"http://ioshaven.co"},{"title":"iNDS","image":"/app-icons/inds.png","version":"1.5.4","desc":"iDNS.","dl":"http://ioshaven.co"},{"title":"Mame3ios","image":"/app-icons/mame.png","version":"1.6","desc":"Mame4ios.","dl":"http://ioshaven.co"},{"title":"RetroArch","image":"/app-icons/retroarch.png","version":"1.6","desc":"RetroArch.","dl":"http://ioshaven.co"},{"title":"Clash of Phoenix","image":"/app-icons/coc.png","version":"8.709.2","desc":"Clash of Phoenix.","dl":"http://ioshaven.co"},{"title":"ISSB","image":"/app-icons/issb.png","version":"2.21","desc":"ISSB.","dl":"http://ioshaven.co"},{"title":"NFL GamePass++","image":"/app-icons/nflgp.png","version":"3.9","desc":"NFL GamePass++.","dl":"http://ioshaven.co"},{"title":"NFL GamePass Europe++","image":"/app-icons/nflgp.png","version":"1.3","desc":"Nfl GamePass Europe++.","dl":"http://ioshaven.co"},{"title":"Fily","image":"/app-icons/fily.png","version":"1.1","desc":"Fily.","dl":"http://ioshaven.co"},{"title":"ifile","image":"/app-icons/ifile.png","version":"2.2","desc":"iFile.","dl":"http://ioshaven.co"},{"title":"Goodnight","image":"/app-icons/goodnight.png","version":"1.1.1","desc":"Goodnight.","dl":"http://ioshaven.co"},{"title":"f.lux","image":"/app-icons/flux.png","version":"1.0.9","desc":"f.lux.","dl":"http://ioshaven.co"},{"title":"Everycord","image":"/app-icons/everycord.png","version":"1.1.5","desc":"EveryCord.","dl":"http://ioshaven.co"},{"title":"LiveRevoke","image":"/app-icons/liverevoke.png","version":"1.0","desc":"Live Revoke.","dl":"http://ioshaven.co"},{"title":"iCleaner","image":"/app-icons/icleaner.png","version":"2.0.1","desc":"iCleaner.","dl":"http://ioshaven.co"},{"title":"Kodi Jarvis","image":"/app-icons/kodi.png","version":"16.1","desc":"Kodi Jarvis.","dl":"http://ioshaven.co"},{"title":"Kodi Krypton","image":"/app-icons/kodi.png","version":"17.3","desc":"Kodi Krypton.","dl":"http://ioshaven.co"},{"title":"BatteryLife","image":"/app-icons/batterylife.png","version":"1.7","desc":"Battery Life.","dl":"http://ioshaven.co"},{"title":"Kodi Legacy","image":"/app-icons/kodi.png","version":"15.2.1","desc":"RetroArch.","dl":"http://ioshaven.co"},{"title":"Kodi Leia","image":"/app-icons/kodi.png","version":"18","desc":"Kodi Leia.","dl":"http://ioshaven.co"},{"title":"xCleaner","image":"/app-icons/xcleaner.png","version":"1.0.2","desc":"xCleaner.","dl":"http://ioshaven.co"},{"title":"iDarkMode","image":"/app-icons/idarkmode.png","version":"1.0","desc":"iDarkMode.","dl":"http://ioshaven.co"},{"title":"iTransmission","image":"/app-icons/itransmission.png","version":"5.0","desc":"iTranmission.","dl":"http://ioshaven.co"}]
+
+/***/ }),
+
+/***/ 2126:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(2127);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(9)("41412e67", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 2127:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(8)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\nimg[data-v-7bd41b98] {\n  cursor: default;\n  pointer-events: none;\n  width: 60%;\n}\nbody[data-v-7bd41b98] {\n  background-color: grey;\n}\n.center[data-v-7bd41b98] {\n  text-align: center;\n  height: 60px;\n  margin-bottom: 10px;\n}\n.height[data-v-7bd41b98] {\n  height: 200px;\n}\n.center-block[data-v-7bd41b98] {\n  display: block;\n  margin: 0 auto;\n}\n.center-dl[data-v-7bd41b98] {\n  position: absolute;\n  bottom: 20px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n.box2[data-v-7bd41b98] {\n  padding: 20px 25px;\n}\n.inside[data-v-7bd41b98] {\n  border: 1px black solid;\n  padding: 30px;\n  position: relative;\n  margin: 10px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 2128:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container-2-box"
+    staticClass: "col-lg-4 col-xl-2 box2"
+  }, [_c('div', {
+    staticClass: "inside"
   }, [_c('h4', {
     staticClass: "center"
   }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('img', {
@@ -359,11 +370,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(_vm._s(_vm.version))]), _vm._v(" "), _c('p', {
     staticClass: "height"
   }, [_vm._v(_vm._s(_vm.desc))]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-primary center-block",
+    staticClass: "btn btn-primary center-dl",
     attrs: {
       "href": _vm.dl
     }
-  }, [_vm._v("Download Here")])])
+  }, [_vm._v("Download Here")])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -372,13 +383,6 @@ if (false) {
      require("vue-hot-reload-api").rerender("data-v-7bd41b98", module.exports)
   }
 }
-
-/***/ }),
-
-/***/ 2125:
-/***/ (function(module, exports) {
-
-module.exports = [{"title":"Twitter ++","image":"/images/twitter.png","version":"7.5.1","desc":"The Twitter tweak that makes Twitter easier and more convenient to use, integrates with other popular apps, and improves on the Twitter interface.","dl":"http://destyy.com/q12EMC"},{"title":"Facebook ++","image":"/images/facebook.png","version":"137.0","desc":"Facebook ++ - The Facebook tweak that brings back the In App Messenger, updated sharing features, download videos and much more.","dl":"http://ioshaven.co"},{"title":"Instagram ++","image":"/images/instagram.png","version":"137.0","desc":"Instagram ++ - Instagram.","dl":"http://ioshaven.co"},{"title":"Twitter ++","image":"/images/twitter.png","version":"7.5.1","desc":"The Twitter tweak that makes Twitter easier and more convenient to use, integrates with other popular apps, and improves on the Twitter interface.","dl":"http://destyy.com/q12EMC"}]
 
 /***/ }),
 
