@@ -18,7 +18,7 @@ const app = new Vue({
       this.searchResults = _.filter(this.apps, (o) =>{
        return _.startsWith(o.title.toLowerCase(), this.store.toLowerCase())
       })
-      // console.log(testing);
+      //  console.log(testing);
     }
   }
 })

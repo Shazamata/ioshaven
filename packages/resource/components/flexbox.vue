@@ -6,14 +6,15 @@
     <br>
     <p class="center color-black">{{version}}</p>
     <p class="desc center color-black">{{desc}}</p>
-    <a :href="dl" class="btn btn-primary center-dl">Download Here</a>
+    <a v-if="signed" class="btn btn-success center-dl center-s-dl">Signed</a>
+    <a :href="dl" class="btn btn-primary center-dl">Unsigned</a>
   </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ["title", "image", "version", "desc", "dl"],
+  props: ["title", "image", "version", "desc", "dl", "signed"],
   mounted() {}
 }
 </script>
@@ -43,11 +44,20 @@ img {
 
 .center-dl {
   position: absolute;
+  bottom: 105px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  padding: 30px 88px;
+}
+
+.center-s-dl {
+  position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   color: white;
-  padding: 30px 50px;
+  padding: 30px 101px;
 }
 
 .box2 {

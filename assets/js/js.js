@@ -60,33 +60,466 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-__webpack_require__(1);
-module.exports = __webpack_require__(14);
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(13)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = [{"title":"Instagram ++","image":"/app-icons/instagram.png","version":"10.34","desc":"Upgrade your Instagram expierence with Instagram++.","dl":"http://gestyy.com/q2zVYl","signed":"https://ioshaven.co"},{"title":"Instagram Rocket","image":"/app-icons/instagram.png","version":"10.34","desc":"Upgrade your Instagram expierence with Instagram Rocket.","dl":"http://gestyy.com/q2z6rD","signed":"https://ioshaven.co"},{"title":"Snapchat++","image":"/app-icons/snapchat.png","version":"10.15.1","desc":"Snapchat++ features a lot like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2Im0U","signed":"https://ioshaven.co"},{"title":"Phantom for Snapchat","image":"/app-icons/snapchat.png","version":"10.15.1","desc":"Phantom for Snapchat has features like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2FhPd","signed":"https://ioshaven.co"},{"title":"Snapchat SCOthman","image":"/app-icons/scothman.png","version":"10.15.1","desc":"Snapchat SCOthman includes features like saving snaps, custom filters, and more!","dl":"http://clkmein.com/q2InhR","signed":"https://ioshaven.co"},{"title":"Tinder++","image":"/app-icons/tinder.png","version":"7.5.3","desc":"Upgrade your Tinder expierence with Tinder++. Obtain features like unlimited likes and more!","dl":"http://corneey.com/q1G1DM","signed":"https://ioshaven.co"},{"title":"Twitter++","image":"/app-icons/twitter.png","version":"7.5.1","desc":"Upgrade your Twitter expierence with Twitter++.","dl":"http://clkmein.com/q2Imh4","signed":"https://ioshaven.co"},{"title":"Youtube++","image":"/app-icons/youtube.png","version":"12.31","desc":"Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!","dl":"http://clkmein.com/q2ImL6","signed":"https://ioshaven.co"},{"title":"Cercube 4","image":"/app-icons/youtube.png","version":"12.29","desc":"Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!","dl":"http://destyy.com/q12RgC","signed":"https://ioshaven.co"},{"title":"Youtube Music++","image":"/app-icons/youtube.png","version":"1.90.2","desc":"Upgrade your YouTube Music expierence with YouTube Music++. Obtain features like no ads and more!","dl":"http://clkmein.com/q2IR3Y","signed":"https://ioshaven.co"},{"title":"Facebook++","image":"/app-icons/facebook.png","version":"137.0","desc":"Upgrade your Facebook expierence with Facebook++.","dl":"http://clkmein.com/q2IERa","signed":"https://ioshaven.co"},{"title":"WhatsApp++","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"Upgrade your WhatsApp expierence with WhatsApp++.","dl":"http://destyy.com/q12T07","signed":"https://ioshaven.co"},{"title":"WhatsPad++","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"Upgrade your WhatsApp expierence with WhatsPad++.","dl":"http://clkmein.com/q2IQcF","signed":"https://ioshaven.co"},{"title":"WhatsApp Watusi","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"Upgrade your WhatsApp expierence with WhatsApp Watusi.","dl":"http://clkmein.com/q2IQE9","signed":"https://ioshaven.co"},{"title":"Twitch++","image":"/app-icons/twitch.png","version":"5.1.1","desc":"Upgrade your Twitch expierence with Twitch++.","dl":"http://corneey.com/q1RRiF","signed":"https://ioshaven.co"},{"title":"Spotify++","image":"/app-icons/spotify.png","version":"8.4.13","desc":"Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!","dl":"http://destyy.com/q12TZj","signed":"https://ioshaven.co"},{"title":"SoundCloud++","image":"/app-icons/soundcloud.png","version":"5.11","desc":"Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!","dl":"http://clkmein.com/qBVqkj","signed":"https://ioshaven.co"},{"title":"DownCloud Pro","image":"/app-icons/downcloud.png","version":"2.0","desc":"Upgrade your SoundCloud expierence with DownCloud Pro. Download any song from SoundCloud for free!","dl":"http://gestyy.com/q2xzR4","signed":"https://ioshaven.co"},{"title":"Deezer++","image":"/app-icons/deezer.png","version":"6.23","desc":"Upgrade your Deezer expierence with Deezer++. Obtain Deezer Premium+ for free!","dl":"http://gestyy.com/q2xunJ","signed":"https://ioshaven.co"},{"title":"Napster++","image":"/app-icons/napster.png","version":"5.11.1","desc":"Upgrade your Napster expierence with Napster++.","dl":"http://clkmein.com/q2IRTg","signed":"https://ioshaven.co"},{"title":"Pandora++","image":"/app-icons/pandora.png","version":"8.7","desc":"Upgrade your Pandora expierence with Pandora++. Obtain Pandora Premium for free!","dl":"http://corneey.com/q1RWwR","signed":"https://ioshaven.co"},{"title":"Movie Box++","image":"/app-icons/moviebox.png","version":"3.7.2","desc":"Upgrade your Movie Box expierence with Movie Box++. Remove ads from Movie Box!","dl":"http://gestyy.com/q2xgSt","signed":"https://ioshaven.co"},{"title":"Crunchyroll++","image":"/app-icons/crunchyroll.png","version":"3.0.8","desc":"Upgrade your Crunchyroll expierence with Crunchyroll++.","dl":"http://clkmein.com/qBV0A6","signed":"https://ioshaven.co"},{"title":"HotspotShield++","image":"/app-icons/hotspot.png","version":"3.7.6","desc":"Upgrade your HotspotShield expierence with HotspotShield++. Obtain HotspotShield Elite for free!","dl":"http://clkmein.com/qBVq81"},{"title":"Betternet++","image":"/app-icons/betternet.png","version":"3.3.21","desc":"Upgrade your Betternet expierence with Betternet++. Obtain Betternet Premium for free!","dl":"http://destyy.com/qN5D6g"},{"title":"NBA++","image":"/app-icons/nba.png","version":"7.053","desc":"Upgrade your NBA expierence with NBA++.","dl":"http://clkmein.com/qBVfyI","signed":"https://ioshaven.co"},{"title":"PokeGo++","image":"/app-icons/pogo.png","version":"2.0","desc":"Upgrade your Pokemon Go expierence with PokeGo++. Obtain features like teleporting and more!","dl":"http://gestyy.com/q2xsks","signed":"https://ioshaven.co"},{"title":"UFC++","image":"/app-icons/ufc.png","version":"3.2","desc":"Upgrade your UFV expierence with UFC++.","dl":"http://gestyy.com/q2xfsZ","signed":"https://ioshaven.co"},{"title":"123 Movies","image":"/app-icons/123.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with 123 Movies.","dl":"http://clkmein.com/qBVbkp"},{"title":"Bobby Movie","image":"/app-icons/bmovie.png","version":"3.1.5","desc":"Watch movies that are in the theatre and TV shows for free with Bobby Movie.","dl":"http://gestyy.com/q2xfCI","signed":"https://ioshaven.co"},{"title":"Bobby Music","image":"/app-icons/bmusic.png","version":"2.0.3","desc":"Listen to any song you want to for free with Bobby Music.","dl":"http://clkmein.com/qBV0eq"},{"title":"Cartoon HD","image":"/app-icons/cartoon.png","version":"2.0","desc":"Watch movies that are in the theatre and TV shows for free with Cartoon HD.","dl":"http://clkmein.com/qBV0ci","signed":"https://ioshaven.co"},{"title":"CienemaBox PB","image":"/app-icons/cb.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with CinemaBox PB.","dl":"http://clkmein.com/qBV0Er"},{"title":"Channels","image":"/app-icons/channels.png","version":"1.3","desc":"Watch live tv for free with Channels.","dl":"http://clkmein.com/qBVx0U","signed":"https://ioshaven.co"},{"title":"Live Wire","image":"/app-icons/livewire.png","version":"1.5","desc":"Watch live tv for free with Live Wire.","dl":"http://clkmein.com/qBVxSu","signed":"https://ioshaven.co"},{"title":"FlickJoy","image":"/app-icons/flickjoy.png","version":"1.5","desc":"Watch movies that are in the theatre and TV shows for free with FlickJoy.","dl":"http://clkmein.com/qBVxMI"},{"title":"Popcorn Time","image":"/app-icons/popcorntime.png","version":"3.1.2","desc":"Watch movies that are in the theatre and TV shows for free with Popcorm Time.","dl":"http://clkmein.com/qBVcwz","signed":"https://ioshaven.co"},{"title":"Surge","image":"/app-icons/surge.png","version":"1.0.1","desc":"Watch live tv for free with Surge.","dl":"http://clkmein.com/qBVvrA"},{"title":"MovieHD","image":"/app-icons/moviehd.png","version":"1.0","desc":"Watch movies that are in the theatre and TV shows for free with MovieHD.","dl":"http://clkmein.com/qBVxbn"},{"title":"ToonsNow","image":"/app-icons/toonsnow.png","version":"1.1.2","desc":"Watch movies that are in the theatre and TV shows for free with ToonsNow.","dl":"http://clkmein.com/qBVcCd","signed":"https://ioshaven.co"},{"title":"Slick TV","image":"/app-icons/slicktv.png","version":"1.3","desc":"Watch live tv for free with Slick TV.","dl":"http://clkmein.com/qBVcTY"},{"title":"Music Pocket","image":"/app-icons/musicpocket.png","version":"1.0","desc":"Listen to any song you want to for free with Music Pocket.","dl":"http://clkmein.com/qBVvIY"},{"title":"AudioTube","image":"/app-icons/audiotube.png","version":"1.7","desc":"Listen to any song on YouTube you want to for free with AudioTube.","dl":"http://clkmein.com/qBVziG"},{"title":"GBA4iOS","image":"/app-icons/gba.png","version":"2.1","desc":"Play GBA on your device with GBA4iOS.","dl":"http://ceesty.com/qNqBou","signed":"https://ioshaven.co"},{"title":"Happy Chick","image":"/app-icons/happychick.png","version":"1.5.4","desc":"Happy Chick is an advanced multi-emulator app for iOS.","dl":"http://ceesty.com/qNqBU2","signed":"https://ioshaven.co"},{"title":"HandJoy","image":"/app-icons/handjoy.png","version":"1.0","desc":"HandJoy is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsaA"},{"title":"iNDS","image":"/app-icons/inds.png","version":"1.5.4","desc":"Play NDS on your device with iNDS.","dl":"http://ceesty.com/qNq6YV"},{"title":"Mame4ios","image":"/app-icons/mame.png","version":"1.6","desc":"Play arcade games on your device with Mame4ios.","dl":"http://ceesty.com/qNq6M2"},{"title":"RetroArch","image":"/app-icons/retroarch.png","version":"1.6","desc":"RetroArch is an advanced multi-emulator app for iOS.","dl":"http://destyy.com/qNXsqQ"},{"title":"Clash of Phoenix","image":"/app-icons/coc.png","version":"8.709.2","desc":"Upgrade your Clash of Clans expierence with Clash of Phoenix. Obtain features like unlimited resources, troops, gems, and more!","dl":"http://ceesty.com/qNwyJH"},{"title":"iSSB","image":"/app-icons/issb.png","version":"2.21","desc":"Play SSB on your device with iSSB.","dl":"http://ceesty.com/qNwuGc"},{"title":"NFL GamePass++","image":"/app-icons/nflgp.png","version":"3.9","desc":"Upgrade your NFL GamePass expierence with NFL GamePass++.","dl":"http://destyy.com/q12kmb"},{"title":"NFL GamePass Europe++","image":"/app-icons/nflgp.png","version":"1.3","desc":"Upgrade your NFL GamePass expierence in Europe with NFL GamePass Europe++.","dl":"http://gestyy.com/q2xKTU"},{"title":"Fily","image":"/app-icons/fily.png","version":"1.1","desc":"Browse and download files on your device with Fily.","dl":"http://ceesty.com/qNwPe5"},{"title":"iFile","image":"/app-icons/ifile.png","version":"2.2","desc":"Browse and download files on your device with iFile.","dl":"http://ceesty.com/qNwPkQ"},{"title":"GoodNight","image":"/app-icons/goodnight.png","version":"1.1.1","desc":"Soothe your eyes at night when looking at your device with GoodNight.","dl":"http://ceesty.com/qNwAqA","signed":"https://ioshaven.co"},{"title":"f.lux","image":"/app-icons/flux.png","version":"1.0.9","desc":"Soothe your eyes at night when looking at your device with f.lux.","dl":"http://corneey.com/q1HOFo"},{"title":"Everycord","image":"/app-icons/everycord.png","version":"1.1.5","desc":"Record your device screen with EveryCord.","dl":"http://gestyy.com/q2xcoF","signed":"https://ioshaven.co"},{"title":"LiveRevoke","image":"/app-icons/liverevoke.png","version":"1.0","desc":"Prevent apps from being revoked with Live Revoke.","dl":"http://gestyy.com/q2xXVL"},{"title":"iCleaner","image":"/app-icons/icleaner.png","version":"2.0.1","desc":"Clean up and free space on your device with iCleaner.","dl":"http://destyy.com/qNXsGY","signed":"https://ioshaven.co"},{"title":"Kodi Jarvis","image":"/app-icons/kodi.png","version":"16.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Jarvis.","dl":"http://ceesty.com/qNwASi","signed":"https://ioshaven.co"},{"title":"Kodi Krypton","image":"/app-icons/kodi.png","version":"17.3","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Krypton.","dl":"http://ceesty.com/qNwA9w","signed":"https://ioshaven.co"},{"title":"Kodi Legacy","image":"/app-icons/kodi.png","version":"15.2.1","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Legacy.","dl":"http://destyy.com/qNXsWe","signed":"https://ioshaven.co"},{"title":"Kodi Leia","image":"/app-icons/kodi.png","version":"18","desc":"Watch movies that are in the theatre and TV shows for free with Kodi Leia.","dl":"http://ceesty.com/qNwSgn"},{"title":"BatteryLife","image":"/app-icons/batterylife.png","version":"1.7","desc":"Moniter and improve your device's battery with Battery Life.","dl":"http://ceesty.com/qNwOBs"},{"title":"xCleaner","image":"/app-icons/xcleaner.png","version":"1.0.2","desc":"Clean up and free space on your device with xCleaner.","dl":"http://ceesty.com/qNwSLn","signed":"https://ioshaven.co"},{"title":"iDarkMode","image":"/app-icons/idarkmode.png","version":"1.0","desc":"Enable dark mode on your device with iDarkMode.","dl":"http://ceesty.com/qNwDar"},{"title":"iTransmission","image":"/app-icons/itransmission.png","version":"5.0","desc":"Download torrents on your device with iTranmission.","dl":"http://gestyy.com/q2xnHM","signed":"https://ioshaven.co"}]
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(6);
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //require('popper')
 //require('bootstrap')
-window.Vue = __webpack_require__(2);
-window._ = __webpack_require__(23);
+window.Vue = __webpack_require__(7);
+window._ = __webpack_require__(8);
 
-Vue.component('flexbox', __webpack_require__(4));
-Vue.component('search', __webpack_require__(18));
+Vue.component('flexbox', __webpack_require__(10));
+Vue.component('search', __webpack_require__(16));
 var app = new Vue({
   el: '#app',
   data: {
-    apps: __webpack_require__(13),
-    searchResults: __webpack_require__(13),
+    apps: __webpack_require__(4),
+    searchResults: __webpack_require__(4),
     store: ""
   },
   methods: {
@@ -96,13 +529,13 @@ var app = new Vue({
       this.searchResults = _.filter(this.apps, function (o) {
         return _.startsWith(o.title.toLowerCase(), _this.store.toLowerCase());
       });
-      // console.log(testing);
+      //  console.log(testing);
     }
   }
 });
 
 /***/ }),
-/* 2 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10194,698 +10627,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(5)
-}
-var Component = __webpack_require__(10)(
-  /* script */
-  __webpack_require__(11),
-  /* template */
-  __webpack_require__(12),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-7bd41b98",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/zack/Desktop/ioshaven.co/packages/resource/components/flexbox.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] flexbox.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7bd41b98", Component.options)
-  } else {
-    hotAPI.reload("data-v-7bd41b98", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(6);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(8)("41412e67", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\nimg[data-v-7bd41b98] {\n  cursor: default;\n  pointer-events: none;\n  width: 60%;\n}\n.center[data-v-7bd41b98] {\n  text-align: center;\n  height: 60px;\n  margin-bottom: 10px;\n}\n.desc[data-v-7bd41b98] {\n  height: 200px;\n  overflow-y: auto;\n}\n.center-block[data-v-7bd41b98] {\n  display: block;\n  margin: 0 auto;\n}\n.center-dl[data-v-7bd41b98] {\n  position: absolute;\n  bottom: 20px;\n  left: 50%;\n  transform: translateX(-50%);\n  color: white;\n  padding: 30px 50px;\n}\n.box2[data-v-7bd41b98] {\n  padding: 5px 0px;\n}\n.inside[data-v-7bd41b98] {\n  border: 1px black solid;\n  padding: 30px;\n  position: relative;\n  margin: 10px;\n  background-color: white;\n  padding-bottom: 115px;\n}\n.color-black[data-v-7bd41b98] {\n  color: black;\n  text-transform: none !important;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(9)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["title", "image", "version", "desc", "dl"],
-  mounted: function mounted() {}
-});
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-4 box2"
-  }, [_c('div', {
-    staticClass: "inside"
-  }, [_c('h4', {
-    staticClass: "center color-black"
-  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('img', {
-    staticClass: "center-block",
-    attrs: {
-      "src": _vm.image
-    }
-  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('p', {
-    staticClass: "center color-black"
-  }, [_vm._v(_vm._s(_vm.version))]), _vm._v(" "), _c('p', {
-    staticClass: "desc center color-black"
-  }, [_vm._v(_vm._s(_vm.desc))]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-primary center-dl",
-    attrs: {
-      "href": _vm.dl
-    }
-  }, [_vm._v("Download Here")])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7bd41b98", module.exports)
-  }
-}
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = [{"title":"Instagram ++","image":"/app-icons/instagram.png","version":"10.34","desc":"Instagram ++.","dl":"https://ioshaven.co"},{"title":"Instagram Rocket","image":"/app-icons/instagram.png","version":"10.34","desc":"Instagram Rocket.","dl":"http://ioshaven.co"},{"title":"Snapchat ++","image":"/app-icons/snapchat.png","version":"10.15.1","desc":"Snapchat ++.","dl":"http://ioshaven.co"},{"title":"Phantom for Snapchat","image":"/app-icons/snapchat.png","version":"10.15.1","desc":"Phantom for Snapchat.","dl":"http://ioshaven.co"},{"title":"Snapchat SCOthman","image":"/app-icons/scothman.png","version":"10.15.1","desc":"Snapchat SCOthman.","dl":"http://ioshaven.co"},{"title":"Tinder ++","image":"/app-icons/tinder.png","version":"7.5.3","desc":"Tinder ++.","dl":"http://ioshaven.co"},{"title":"Twitter ++","image":"/app-icons/twitter.png","version":"7.5.1","desc":"Twitter ++.","dl":"http://ioshaven.co"},{"title":"Youtube ++","image":"/app-icons/youtube.png","version":"12.31","desc":"Youtube ++.","dl":"http://ioshaven.co"},{"title":"Cercube 4","image":"/app-icons/youtube.png","version":"12.29","desc":"Cercube 4.","dl":"http://ioshaven.co"},{"title":"Youtube Music ++","image":"/app-icons/youtube.png","version":"1.90.2","desc":"Youtube Music++.","dl":"http://ioshaven.co"},{"title":"Facebook ++","image":"/app-icons/facebook.png","version":"137.0","desc":"Facebook ++.","dl":"http://ioshaven.co"},{"title":"WhatsApp ++","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"WhatsApp ++.","dl":"http://ioshaven.co"},{"title":"WhatsPad ++","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"WhatsPad ++.","dl":"http://ioshaven.co"},{"title":"WhatsApp Watusi","image":"/app-icons/whatsapp.png","version":"2.17.42","desc":"WhatsApp Watusi.","dl":"http://ioshaven.co"},{"title":"twitch ++","image":"/app-icons/twitch.png","version":"5.1.1","desc":"Twitch ++.","dl":"http://ioshaven.co"},{"title":"Spotify ++","image":"/app-icons/spotify.png","version":"8.4.13","desc":"Spotify ++.","dl":"http://ioshaven.co"},{"title":"SoundCloud ++","image":"/app-icons/soundcloud.png","version":"5.11","desc":"Soundcloud ++.","dl":"http://ioshaven.co"},{"title":"DownCloud Pro","image":"/app-icons/downcloud.png","version":"2.0","desc":"DownCloud.","dl":"http://ioshaven.co"},{"title":"Deezer ++","image":"/app-icons/deezer.png","version":"6.23","desc":"Deezer ++.","dl":"http://ioshaven.co"},{"title":"Napster ++","image":"/app-icons/napster.png","version":"5.11.1","desc":"Napster ++.","dl":"http://ioshaven.co"},{"title":"Pandora ++","image":"/app-icons/pandora.png","version":"8.7","desc":"Pandora ++.","dl":"http://ioshaven.co"},{"title":"Movie box ++","image":"/app-icons/moviebox.png","version":"3.7.2","desc":"Movie Box ++.","dl":"http://ioshaven.co"},{"title":"Crunchyroll ++","image":"/app-icons/crunchyroll.png","version":"3.0.8","desc":"Crunchyroll ++.","dl":"http://ioshaven.co"},{"title":"Hotspot Shield ++","image":"/app-icons/hotspot.png","version":"3.7.6","desc":"Hostspot Shield ++.","dl":"http://ioshaven.co"},{"title":"Betternet ++","image":"/app-icons/betternet.png","version":"3.3.21","desc":"Betternet ++.","dl":"http://ioshaven.co"},{"title":"NBA ++","image":"/app-icons/nba.png","version":"7.053","desc":"NBA ++.","dl":"http://ioshaven.co"},{"title":"PokeGo ++","image":"/app-icons/pogo.png","version":"2.0","desc":"PokeGo ++.","dl":"http://ioshaven.co"},{"title":"UFC ++","image":"/app-icons/ufc.png","version":"3.2","desc":"UFC ++.","dl":"http://ioshaven.co"},{"title":"123 Movies","image":"/app-icons/123.png","version":"1.0","desc":"123 Movies.","dl":"http://ioshaven.co"},{"title":"Bobby movie","image":"/app-icons/bmovie.png","version":"3.1.5","desc":"Bobby Movie","dl":"http://ioshaven.co"},{"title":"Bobby Music","image":"/app-icons/bmusic.png","version":"2.0.3","desc":"Bobby Music.","dl":"http://ioshaven.co"},{"title":"Cartoon HD","image":"/app-icons/cartoon.png","version":"2.0","desc":"Cartoon HD.","dl":"http://ioshaven.co"},{"title":"CienemaBox PB","image":"/app-icons/cb.png","version":"1.0","desc":"CinemaBox PB.","dl":"http://ioshaven.co"},{"title":"Channels","image":"/app-icons/channels.png","version":"1.3","desc":"Channels.","dl":"http://ioshaven.co"},{"title":"Live Wire","image":"/app-icons/livewire.png","version":"1.5","desc":"Live Wire.","dl":"http://ioshaven.co"},{"title":"FlickJoy","image":"/app-icons/flickjoy.png","version":"1.5","desc":"Flickjoy.","dl":"http://ioshaven.co"},{"title":"Popcorn Time","image":"/app-icons/popcorntime.png","version":"3.1.2","desc":"Popcorm Time.","dl":"http://ioshaven.co"},{"title":"Surge","image":"/app-icons/surge.png","version":"1.0.1","desc":"Surge.","dl":"http://ioshaven.co"},{"title":"MovieHD","image":"/app-icons/moviehd.png","version":"1.0","desc":"MovieHD.","dl":"http://ioshaven.co"},{"title":"ToonsNow","image":"/app-icons/toonsnow.png","version":"1.1.2","desc":"toonsnow.","dl":"http://ioshaven.co"},{"title":"Slick TV","image":"/app-icons/slicktv.png","version":"1.3","desc":"Slick TV.","dl":"http://ioshaven.co"},{"title":"Music Pocket","image":"/app-icons/musicpocket.png","version":"1.0","desc":"Music Pocket.","dl":"http://ioshaven.co"},{"title":"AudioTube","image":"/app-icons/audiotube.png","version":"1.7","desc":"AudioTube.","dl":"http://ioshaven.co"},{"title":"GBA4IOS","image":"/app-icons/gba.png","version":"2.1","desc":"GBA4IOS.","dl":"http://ioshaven.co"},{"title":"Happy Chick","image":"/app-icons/happychick.png","version":"1.5.4","desc":"Happy Chick.","dl":"http://ioshaven.co"},{"title":"HandJoy","image":"/app-icons/handjoy.png","version":"1.0","desc":"HandJoy.","dl":"http://ioshaven.co"},{"title":"iNDS","image":"/app-icons/inds.png","version":"1.5.4","desc":"iDNS.","dl":"http://ioshaven.co"},{"title":"Mame3ios","image":"/app-icons/mame.png","version":"1.6","desc":"Mame4ios.","dl":"http://ioshaven.co"},{"title":"RetroArch","image":"/app-icons/retroarch.png","version":"1.6","desc":"RetroArch.","dl":"http://ioshaven.co"},{"title":"Clash of Phoenix","image":"/app-icons/coc.png","version":"8.709.2","desc":"Clash of Phoenix.","dl":"http://ioshaven.co"},{"title":"ISSB","image":"/app-icons/issb.png","version":"2.21","desc":"ISSB.","dl":"http://ioshaven.co"},{"title":"NFL GamePass++","image":"/app-icons/nflgp.png","version":"3.9","desc":"NFL GamePass++.","dl":"http://ioshaven.co"},{"title":"NFL GamePass Europe++","image":"/app-icons/nflgp.png","version":"1.3","desc":"Nfl GamePass Europe++.","dl":"http://ioshaven.co"},{"title":"Fily","image":"/app-icons/fily.png","version":"1.1","desc":"Fily.","dl":"http://ioshaven.co"},{"title":"ifile","image":"/app-icons/ifile.png","version":"2.2","desc":"iFile.","dl":"http://ioshaven.co"},{"title":"Goodnight","image":"/app-icons/goodnight.png","version":"1.1.1","desc":"Goodnight.","dl":"http://ioshaven.co"},{"title":"f.lux","image":"/app-icons/flux.png","version":"1.0.9","desc":"f.lux.","dl":"http://ioshaven.co"},{"title":"Everycord","image":"/app-icons/everycord.png","version":"1.1.5","desc":"EveryCord.","dl":"http://ioshaven.co"},{"title":"LiveRevoke","image":"/app-icons/liverevoke.png","version":"1.0","desc":"Live Revoke.","dl":"http://ioshaven.co"},{"title":"iCleaner","image":"/app-icons/icleaner.png","version":"2.0.1","desc":"iCleaner.","dl":"http://ioshaven.co"},{"title":"Kodi Jarvis","image":"/app-icons/kodi.png","version":"16.1","desc":"Kodi Jarvis.","dl":"http://ioshaven.co"},{"title":"Kodi Krypton","image":"/app-icons/kodi.png","version":"17.3","desc":"Kodi Krypton.","dl":"http://ioshaven.co"},{"title":"BatteryLife","image":"/app-icons/batterylife.png","version":"1.7","desc":"Battery Life.","dl":"http://ioshaven.co"},{"title":"Kodi Legacy","image":"/app-icons/kodi.png","version":"15.2.1","desc":"RetroArch.","dl":"http://ioshaven.co"},{"title":"Kodi Leia","image":"/app-icons/kodi.png","version":"18","desc":"Kodi Leia.","dl":"http://ioshaven.co"},{"title":"xCleaner","image":"/app-icons/xcleaner.png","version":"1.0.2","desc":"xCleaner.","dl":"http://ioshaven.co"},{"title":"iDarkMode","image":"/app-icons/idarkmode.png","version":"1.0","desc":"iDarkMode.","dl":"http://ioshaven.co"},{"title":"iTransmission","image":"/app-icons/itransmission.png","version":"5.0","desc":"iTranmission.","dl":"http://ioshaven.co"}]
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(28)
-}
-var Component = __webpack_require__(10)(
-  /* script */
-  __webpack_require__(21),
-  /* template */
-  __webpack_require__(27),
-  /* styles */
-  injectStyle,
-  /* scopeId */
-  "data-v-1436fd26",
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/zack/Desktop/ioshaven.co/packages/resource/components/searchbar.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] searchbar.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1436fd26", Component.options)
-  } else {
-    hotAPI.reload("data-v-1436fd26", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 19 */,
-/* 20 */,
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  methods: {
-    search: function search(e) {
-      this.$emit("result", e);
-    }
-  }
-});
-
-/***/ }),
-/* 22 */,
-/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -27974,10 +27719,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(24)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(9)(module)))
 
 /***/ }),
-/* 24 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -28005,9 +27750,293 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 25 */,
-/* 26 */,
-/* 27 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(11)
+}
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(14),
+  /* template */
+  __webpack_require__(15),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-7bd41b98",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/zack/Desktop/ioshaven.co/packages/resource/components/flexbox.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] flexbox.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7bd41b98", Component.options)
+  } else {
+    hotAPI.reload("data-v-7bd41b98", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(12);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("41412e67", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7bd41b98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./flexbox.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\nimg[data-v-7bd41b98] {\n  cursor: default;\n  pointer-events: none;\n  width: 60%;\n}\n.center[data-v-7bd41b98] {\n  text-align: center;\n  height: 60px;\n  margin-bottom: 10px;\n}\n.desc[data-v-7bd41b98] {\n  height: 200px;\n  overflow-y: auto;\n}\n.center-block[data-v-7bd41b98] {\n  display: block;\n  margin: 0 auto;\n}\n.center-dl[data-v-7bd41b98] {\n  position: absolute;\n  bottom: 105px;\n  left: 50%;\n  transform: translateX(-50%);\n  color: white;\n  padding: 30px 88px;\n}\n.center-s-dl[data-v-7bd41b98] {\n  position: absolute;\n  bottom: 20px;\n  left: 50%;\n  transform: translateX(-50%);\n  color: white;\n  padding: 30px 101px;\n}\n.box2[data-v-7bd41b98] {\n  padding: 5px 0px;\n}\n.inside[data-v-7bd41b98] {\n  border: 1px black solid;\n  padding: 30px;\n  position: relative;\n  margin: 10px;\n  background-color: white;\n  padding-bottom: 115px;\n}\n.color-black[data-v-7bd41b98] {\n  color: black;\n  text-transform: none !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    }
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
+    } else {
+      newStyles[id].parts.push(part)
+    }
+  }
+  return styles
+}
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["title", "image", "version", "desc", "dl", "signed"],
+  mounted: function mounted() {}
+});
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-4 box2"
+  }, [_c('div', {
+    staticClass: "inside"
+  }, [_c('h4', {
+    staticClass: "center color-black"
+  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('img', {
+    staticClass: "center-block",
+    attrs: {
+      "src": _vm.image
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('p', {
+    staticClass: "center color-black"
+  }, [_vm._v(_vm._s(_vm.version))]), _vm._v(" "), _c('p', {
+    staticClass: "desc center color-black"
+  }, [_vm._v(_vm._s(_vm.desc))]), _vm._v(" "), (_vm.signed) ? _c('a', {
+    staticClass: "btn btn-success center-dl center-s-dl"
+  }, [_vm._v("Signed")]) : _vm._e(), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-primary center-dl",
+    attrs: {
+      "href": _vm.dl
+    }
+  }, [_vm._v("Unsigned")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7bd41b98", module.exports)
+  }
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(17)
+}
+var Component = __webpack_require__(3)(
+  /* script */
+  __webpack_require__(19),
+  /* template */
+  __webpack_require__(20),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-1436fd26",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/zack/Desktop/ioshaven.co/packages/resource/components/searchbar.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] searchbar.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1436fd26", Component.options)
+  } else {
+    hotAPI.reload("data-v-1436fd26", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(18);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("361f1b5e", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1436fd26\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./searchbar.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1436fd26\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./searchbar.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.search-bar[data-v-1436fd26] {\n  margin: 10px;\n}\n[data-v-1436fd26]::-webkit-input-placeholder {\n  color: #4d4d4d !important;\n  opacity: 1.0;\n}\n[data-v-1436fd26]:-moz-placeholder {\n  color: #4d4d4d !important;\n  opacity: 1.0;\n}\n[data-v-1436fd26]:-ms-input-placeholder {\n  color: #4d4d4d !important;\n  opacity: 1.0;\n}\n.search-field[data-v-1436fd26] {\n  color: #000;\n  font-size: 30px;\n  margin-top: 20px;\n  margin-bottom: 20px;\n  background-color: white;\n  border: 1px black solid;\n}\n.search-field[data-v-1436fd26]:focus {\n  box-shadow: 0 0 0 2px #121212;\n}\n.search-bar[data-v-1436fd26] {\n  width: 100%;\n  padding: 0px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    search: function search(e) {
+      this.$emit("result", e);
+    }
+  }
+});
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28046,44 +28075,10 @@ if (false) {
 }
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 21 */
+/***/ (function(module, exports) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(29);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(8)("361f1b5e", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1436fd26\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./searchbar.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1436fd26\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./searchbar.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(7)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.search-bar[data-v-1436fd26] {\n  margin: 10px;\n}\n[data-v-1436fd26]::-webkit-input-placeholder {\n  color: #4d4d4d !important;\n  opacity: 1.0;\n}\n[data-v-1436fd26]:-moz-placeholder {\n  color: #4d4d4d !important;\n  opacity: 1.0;\n}\n[data-v-1436fd26]:-ms-input-placeholder {\n  color: #4d4d4d !important;\n  opacity: 1.0;\n}\n.search-field[data-v-1436fd26] {\n  color: #000;\n  font-size: 30px;\n  margin-top: 20px;\n  margin-bottom: 20px;\n  background-color: white;\n  border: 1px black solid;\n}\n.search-field[data-v-1436fd26]:focus {\n  box-shadow: 0 0 0 2px #121212;\n}\n.search-bar[data-v-1436fd26] {\n  width: 100%;\n  padding: 0px;\n}\n", ""]);
-
-// exports
-
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
