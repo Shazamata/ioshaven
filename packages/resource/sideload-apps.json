@@ -528,5 +528,12 @@
     "desc": "Download torrents on your device with iTranmission.",
     "dl": "http://gestyy.com/q2xnHM",
     "signed": "http://clkmein.com/q2FdLw"
+  },
+  {
+    "title": "AeroTV",
+    "image": "/app-icons/aero.png",
+    "version": "b15",
+    "desc": "Watch live tv for free with AeroTV.",
+    "signed": "http://clkmein.com/q2FsmD."
   }
 ]
