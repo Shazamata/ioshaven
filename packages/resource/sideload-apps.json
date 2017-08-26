@@ -442,13 +442,6 @@
     "signed": "https://ioshaven.co"
   },
   {
-    "title": "LiveRevoke",
-    "image": "/app-icons/liverevoke.png",
-    "version": "1.0",
-    "desc": "Prevent apps from being revoked with Live Revoke.",
-    "dl": "http://gestyy.com/q2xXVL"
-  },
-  {
     "title": "iCleaner",
     "image": "/app-icons/icleaner.png",
     "version": "2.0.1",
