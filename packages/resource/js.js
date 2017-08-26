@@ -15,9 +15,26 @@ const app = new Vue({
   },
   methods: {
     child: function(value){
-      this.searchResults = _.filter(this.apps, (o) =>{
+
+      this.searchResults = _.sortBy(this.apps, ['title'])
+
+
+      this.searchResults = _.filter(this.searchResults, (o) =>{
        return _.startsWith(o.title.toLowerCase(), this.store.toLowerCase())
       })
+
+      if (value.unsigned) {
+        this.searchResults = _.filter(this.searchResults, (o) => {
+          return o.dl != null
+        })
+      }
+
+      if (value.signed) {
+        this.searchResults = _.filter(this.searchResults, (o) => {
+          return o.signed != null
+        })
+      }
+
       //  console.log(testing);
     }
   }

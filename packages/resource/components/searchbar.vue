@@ -1,16 +1,44 @@
 <template>
   <div class="search-bar">
     <input type="text" class="search-field" placeholder="Search..." v-model="$parent.store" @keyup="search">
+
+    <div class="filters">
+      <div class="checkbox" @click="toggle('signed')">
+        <div :class="{'selected': filters.signed}" ></div>
+        <span>Signed</span>
+      </div>
+
+      <div class="checkbox" @click="toggle('unsigned')">
+        <div :class="{'selected': filters.unsigned}"></div>
+        <span>Unsigned</span>
+      </div>
+    </div>
+
   </div>
 
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      filters:{
+        signed: false,
+        unsigned: false
+      }
+    }
+  },
   methods: {
     search: function(e){
-      this.$emit("result", e)
+      this.$emit("result", this.filters)
+    },
+    toggle: function (item) {
+      this.filters[item] = !this.filters[item]
+      this.$emit("result", this.filters)
     }
+  },
+  mounted () {
+    this.$emit("result", this.filters)
   }
 }
 </script>
@@ -20,8 +48,39 @@ export default {
 $search-color: #000;
 $placeholder-color: lighten($search-color, 30%);
 
+.filters{
+  display: flex;
+}
+.checkbox {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    div{
+      border: 1px solid black;
+      padding: 12px;
+      display: inline-block;
+      border-radius: 50%;
+      background: white;
+      margin-right: 10px;
+    }
+
+    .selected {
+      background: black;
+    }
+}
+
 .search-bar {
-  margin: 10px;
+  margin: 5px;
 }
 
 ::-webkit-input-placeholder {

@@ -7,7 +7,7 @@
     <p class="center color-black">{{version}}</p>
     <p class="desc center color-black">{{desc}}</p>
     <a v-if="signed" :href="signed" class="btn btn-success center-dl center-s-dl">Signed</a>
-    <a :href="dl" class="btn btn-primary center-dl">Unsigned</a>
+    <a v-if="dl" :href="dl" class="btn btn-primary center-dl">Unsigned</a>
   </div>
 </div>
 </template>
@@ -23,26 +23,27 @@ export default {
 img {
   cursor: default;
   pointer-events: none;
-  width: 60%;
+  width: 150px;
+  height: 150px;
 }
 
-.center {
+/*.center {
   text-align: center;
   height: 60px;
   margin-bottom: 10px;
-}
+}*/
 
 .desc {
   height: 200px;
   overflow-y: auto;
 }
 
-.center-block {
+/*.center-block {
   display: block;
   margin: 0 auto;
-}
+}*/
 
-.center-dl {
+/*.center-dl {
   position: absolute;
   bottom: 105px;
   left: 50%;
@@ -58,22 +59,38 @@ img {
   transform: translateX(-50%);
   color: white;
   padding: 30px 101px;
+}*/
+
+h4 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-transform: none;
+}
+.center-dl {
+    padding: 30px;
+    width: 100%;
+    color: white !important;
+    margin: 4px 0px;
 }
 
 .box2 {
-  padding: 5px 0px;
+  padding: 5px;
 
 }
 .inside {
-  border: 1px black solid;
-  padding: 30px;
-  position: relative;
-  margin: 10px;
-  background-color: white;
-  padding-bottom: 115px;
+    border: 1px black solid;
+    padding: 30px;
+    position: relative;
+    background-color: white;
+    text-align: center;
+    overflow-y: hidden;
 }
-.color-black {
+.inside * {
+  color: black;
+}
+/*.color-black {
   color: black;
   text-transform: none !important;
-}
+}*/
 </style>

@@ -13,8 +13,8 @@ nunjucks.configure('views', {
 
 app.use(express.static('assets'))
 app.get('/', home)
-app.get('/ipas', ipas)
-app.get('/signed', signed)
+app.get('/ipas', apps)
+app.get('/signed', apps)
 app.get('/apps', apps)
 app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
@@ -26,12 +26,6 @@ function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
 }
 function apps(req, res){
-  res.render('apps.html', {title: 'Apps - iOS Haven'})
-}
-function ipas(req, res){
-  res.render('apps.html', {title: 'Apps - iOS Haven'})
-}
-function signed(req, res){
   res.render('apps.html', {title: 'Apps - iOS Haven'})
 }
 function betas(req, res) {
