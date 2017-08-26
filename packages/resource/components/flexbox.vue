@@ -6,7 +6,7 @@
     <br>
     <p class="center color-black">{{version}}</p>
     <p class="desc center color-black">{{desc}}</p>
-    <a v-if="signed" class="btn btn-success center-dl center-s-dl">Signed</a>
+    <a v-if="signed" :href="signed" class="btn btn-success center-dl center-s-dl">Signed</a>
     <a :href="dl" class="btn btn-primary center-dl">Unsigned</a>
   </div>
 </div>
