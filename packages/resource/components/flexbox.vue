@@ -6,8 +6,8 @@
     <br>
     <p class="center color-black">{{version}}</p>
     <p class="desc center color-black">{{desc}}</p>
-    <a v-if="signed" :href="signed" class="btn btn-success center-dl center-s-dl">Signed</a>
-    <a v-if="dl" :href="dl" class="btn btn-primary center-dl">Unsigned</a>
+    <a v-if="signed" :href="signed" class="btn btn-success center-dl center-s-dl">Install Signed</a>
+    <a v-if="dl" :href="dl" class="btn btn-primary center-dl">Download .ipa</a>
   </div>
 </div>
 </template>
