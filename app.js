@@ -12,6 +12,7 @@ nunjucks.configure('views', {
 })
 
 app.use(express.static('assets'))
+app.use(express.static('favicomatic'))
 app.get('/', home)
 app.get('/ipas', apps)
 app.get('/signed', apps)
