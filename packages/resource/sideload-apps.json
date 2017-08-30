@@ -2,7 +2,7 @@
   {
     "title": "Instagram++",
     "image": "/app-icons/instagram.png",
-    "version": "11.0",
+    "version": "12.0",
     "desc": "Upgrade your Instagram expierence with Instagram++.",
     "dl": "http://destyy.com/q3Yd4y",
     "signed": "http://clkmein.com/q2FuL9"
@@ -10,7 +10,7 @@
   {
     "title": "Instagram Rocket",
     "image": "/app-icons/instagram.png",
-    "version": "11.0",
+    "version": "12.0",
     "desc": "Upgrade your Instagram expierence with Instagram Rocket.",
     "dl": "http://destyy.com/q3Yfu8",
     "signed": "http://clkmein.com/q2Fu5A"
@@ -65,7 +65,7 @@
   {
     "title": "Cercube 4",
     "image": "/app-icons/youtube.png",
-    "version": "12.29",
+    "version": "12.32",
     "desc": "Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!",
     "dl": "http://destyy.com/q12RgC",
     "signed": "http://clkmein.com/q2Fotv"
@@ -73,7 +73,7 @@
   {
     "title": "Youtube Music++",
     "image": "/app-icons/youtube.png",
-    "version": "1.90.2",
+    "version": "1.92.2",
     "desc": "Upgrade your YouTube Music expierence with YouTube Music++. Obtain features like no ads and more!",
     "dl": "http://clkmein.com/q2IR3Y",
     "signed": "http://clkmein.com/q2Fovj"
@@ -81,7 +81,7 @@
   {
     "title": "Facebook++",
     "image": "/app-icons/facebook.png",
-    "version": "137.0",
+    "version": "138.0",
     "desc": "Upgrade your Facebook expierence with Facebook++.",
     "dl": "http://clkmein.com/q2IERa",
     "signed": "http://clkmein.com/q2FoTq"
@@ -128,7 +128,7 @@
   {
     "title": "Spotify++",
     "image": "/app-icons/spotify.png",
-    "version": "8.4.15",
+    "version": "8.4.16",
     "desc": "Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!",
     "dl": "http://destyy.com/q3YgL3",
     "signed": "http://clkmein.com/q2FpxX"
@@ -528,5 +528,20 @@
     "desc": "Watch live tv for free with AeroTV.",
     "dl": "http://festyy.com/q3A35q",
     "signed": "http://clkmein.com/q2FsmD"
+  },
+  {
+    "title": "iTD App",
+    "image": "/app-icons/itdapp.jpg",
+    "version": "2.1",
+    "desc": "Use TweetDeck on your mobile device.",
+    "dl": "http://gestyy.com/q37lGy",
+    "signed": "http://gestyy.com/q37xP1"
+  },
+  {
+    "title": "LiveRevoke",
+    "image": "/app-icons/itdapp.jpg",
+    "version": "1.0",
+    "desc": "See when your favorite third-party AppStores get revoked.",
+    "dl": ""
   }
 ]

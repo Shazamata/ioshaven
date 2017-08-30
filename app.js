@@ -22,6 +22,7 @@ app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
+app.get('/forum', forum)
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -30,10 +31,10 @@ function apps(req, res){
   res.render('apps.html', {title: 'Apps - iOS Haven'})
 }
 function betas(req, res) {
-  res.render('betas.html', {title: 'Beta Downloads - iOS Haven '})
+  res.render('betas.html', {title: 'Betas - iOS Haven '})
 }
 function jailbreaks(req, res) {
-  res.render('jailbreaks.html', {title: 'iOS Jailbreaks - iOS Haven'})
+  res.render('jailbreaks.html', {title: 'Jailbreaks - iOS Haven'})
 }
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
@@ -43,4 +44,7 @@ function test(req, res) {
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
+}
+function forum(req, res) {
+  res.render('forum.html', {title: 'Request/Report an App - iOS Haven'})
 }
