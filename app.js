@@ -22,11 +22,9 @@ app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
-<<<<<<< Updated upstream
 app.get('/forum', forum)
-=======
 app.get('/contact', contact)
->>>>>>> Stashed changes
+
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
