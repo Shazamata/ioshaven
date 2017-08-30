@@ -531,7 +531,7 @@
   },
   {
     "title": "iTD App",
-    "image": "/app-icons/itdapp.jpg",
+    "image": "/app-icons/itdapp.png",
     "version": "2.1",
     "desc": "Use TweetDeck on your mobile device.",
     "dl": "http://gestyy.com/q37lGy",
@@ -539,7 +539,7 @@
   },
   {
     "title": "LiveRevoke",
-    "image": "/app-icons/itdapp.jpg",
+    "image": "/app-icons/liverevoke.png",
     "version": "1.0",
     "desc": "See when your favorite third-party AppStores get revoked.",
     "dl": ""
