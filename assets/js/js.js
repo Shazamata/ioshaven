@@ -549,6 +549,10 @@ var app = new Vue({
   }
 });
 
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus();
+});
+
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
