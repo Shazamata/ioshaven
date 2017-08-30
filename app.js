@@ -49,11 +49,9 @@ function test(req, res) {
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
 }
-<<<<<<< Updated upstream
 function forum(req, res) {
   res.render('forum.html', {title: 'Request/Report an App - iOS Haven'})
-=======
+}
 function contact(req,res) {
   res.render('contact.html', {title: 'Contact - iOS Haven'})
->>>>>>> Stashed changes
 }
