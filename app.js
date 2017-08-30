@@ -22,7 +22,11 @@ app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
+<<<<<<< Updated upstream
 app.get('/forum', forum)
+=======
+app.get('/contact', contact)
+>>>>>>> Stashed changes
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -45,6 +49,11 @@ function test(req, res) {
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
 }
+<<<<<<< Updated upstream
 function forum(req, res) {
   res.render('forum.html', {title: 'Request/Report an App - iOS Haven'})
+=======
+function contact(req,res) {
+  res.render('contact.html', {title: 'Contact - iOS Haven'})
+>>>>>>> Stashed changes
 }
