@@ -22,7 +22,6 @@ app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
-app.get('/forum', forum)
 app.get('/contact', contact)
 
 
@@ -46,9 +45,6 @@ function test(req, res) {
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
-}
-function forum(req, res) {
-  res.render('forum.html', {title: 'Request/Report an App - iOS Haven'})
 }
 function contact(req,res) {
   res.render('contact.html', {title: 'Contact - iOS Haven'})

@@ -26,7 +26,7 @@
   {
     "title": "Phantom for Snapchat",
     "image": "/app-icons/snapchat.png",
-    "version": "10.15.1",
+    "version": "10.16.0",
     "desc": "Phantom for Snapchat has features like saving snaps, custom filters, and more!",
     "dl": "http://clkmein.com/q2FhPd",
     "signed": "http://clkmein.com/q2FiAJ"
@@ -34,7 +34,7 @@
   {
       "title": "Snapchat SCOthman",
       "image": "/app-icons/scothman.png",
-      "version": "10.15.1",
+      "version": "10.16.0",
       "desc": "Snapchat SCOthman includes features like saving snaps, custom filters, and more!",
       "dl": "http://clkmein.com/q2InhR",
       "signed": "http://clkmein.com/q2FiLw"
@@ -57,7 +57,7 @@
   {
         "title": "Youtube++",
         "image": "/app-icons/youtube.png",
-        "version": "12.32",
+        "version": "12.33",
         "desc": "Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!",
         "dl": "http://destyy.com/q3YfDa",
         "signed": "http://clkmein.com/q2Fi5W"
@@ -65,7 +65,7 @@
   {
     "title": "Cercube 4",
     "image": "/app-icons/youtube.png",
-    "version": "12.32",
+    "version": "12.33",
     "desc": "Upgrade your YouTube expierence with Cercube 4. Obtain features like no ads and more!",
     "dl": "http://destyy.com/q12RgC",
     "signed": "http://clkmein.com/q2Fotv"
@@ -542,6 +542,6 @@
     "image": "/app-icons/liverevoke.png",
     "version": "1.0",
     "desc": "See when your favorite third-party AppStores get revoked.",
-    "dl": ""
+    "dl": "http://clkmein.com/q4rZRo"
   }
 ]
