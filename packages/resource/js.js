@@ -3,6 +3,10 @@
 window.Vue = require('vue')
 window._ = require('lodash');
 
+$(document).ready(function (){
+  if (location.pathname == "/") $("body").addClass("landing")
+  console.log(location.pathname);
+})
 
 Vue.component('flexbox', require('./components/flexbox.vue'))
 Vue.component('search', require('./components/searchbar.vue'))
@@ -36,10 +40,6 @@ const app = new Vue({
       }
 
       //  console.log(testing);
-    }
+    },
   }
-})
-
-$('#myModal').on('shown.bs.modal', function () {
-  $('#myInput').focus()
 })
