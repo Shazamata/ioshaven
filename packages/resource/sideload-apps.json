@@ -18,7 +18,7 @@
   {
     "title": "Snapchat++",
     "image": "/app-icons/snapchat.png",
-    "version": "10.15.1",
+    "version": "10.16.1",
     "desc": "Snapchat++ features a lot like saving snaps, custom filters, and more!",
     "dl": "http://clkmein.com/q2Im0U",
     "signed": "http://clkmein.com/q2Fi0Y"
@@ -26,7 +26,7 @@
   {
     "title": "Phantom for Snapchat",
     "image": "/app-icons/snapchat.png",
-    "version": "10.16.0",
+    "version": "10.16.1",
     "desc": "Phantom for Snapchat has features like saving snaps, custom filters, and more!",
     "dl": "http://clkmein.com/q2FhPd",
     "signed": "http://clkmein.com/q2FiAJ"
@@ -34,7 +34,7 @@
   {
       "title": "Snapchat SCOthman",
       "image": "/app-icons/scothman.png",
-      "version": "10.16.0",
+      "version": "10.16.1",
       "desc": "Snapchat SCOthman includes features like saving snaps, custom filters, and more!",
       "dl": "http://clkmein.com/q2InhR",
       "signed": "http://clkmein.com/q2FiLw"
@@ -543,5 +543,26 @@
     "version": "1.0",
     "desc": "See when your favorite third-party AppStores get revoked.",
     "dl": "http://clkmein.com/q4rZRo"
+  },
+  {
+    "title": "PPSSPP",
+    "image": "/app-icons/ppsspp.png",
+    "version": "1.4.2",
+    "desc": "A PSP emulator for your iPhone.",
+    "dl": "http://ceesty.com/q4vklh"
+  },
+  {
+    "title": "Provenance iOS",
+    "image": "/app-icons/provenance.png",
+    "version": "1.3.2",
+    "desc": "Provenance supports many different systems including Sega, Nintendo, and as well as Atari.",
+    "dl": "http://ceesty.com/q4vltL"
+  },
+  {
+    "title": "Saavn++",
+    "image": "/app-icons/saavn.png",
+    "version": "5.7",
+    "desc": "Listen to your favorite hindi songs for free.",
+    "dl": "http://ceesty.com/q4vl3z"
   }
 ]
