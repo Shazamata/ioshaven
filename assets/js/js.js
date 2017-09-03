@@ -67,33 +67,6 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -173,7 +146,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -394,7 +367,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -491,6 +464,33 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
@@ -501,7 +501,7 @@ module.exports = [{"title":"Instagram++","image":"/app-icons/instagram.png","ver
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(26);
 
 
 /***/ }),
@@ -10647,7 +10647,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 8 */
@@ -27739,7 +27739,7 @@ module.exports = Vue$3;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(9)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(9)(module)))
 
 /***/ }),
 /* 9 */
@@ -27778,7 +27778,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(11)
 }
-var Component = __webpack_require__(3)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(14),
   /* template */
@@ -27824,7 +27824,7 @@ var content = __webpack_require__(12);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("41412e67", content, false);
+var update = __webpack_require__(1)("41412e67", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -27843,7 +27843,7 @@ if(false) {
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(0)(undefined);
 // imports
 
 
@@ -27961,7 +27961,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(17)
 }
-var Component = __webpack_require__(3)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(19),
   /* template */
@@ -28007,7 +28007,7 @@ var content = __webpack_require__(18);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("361f1b5e", content, false);
+var update = __webpack_require__(1)("361f1b5e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -28026,7 +28026,7 @@ if(false) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(0)(undefined);
 // imports
 
 
@@ -28151,7 +28151,12 @@ if (false) {
 }
 
 /***/ }),
-/* 21 */
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
