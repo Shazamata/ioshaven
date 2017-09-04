@@ -15,7 +15,7 @@
             <label for="email" class="begin">Email:</label>
             <input v-model="email" type="email" class="inputfield" id="email" name="email" placeholder="Your email..." required />
 
-            <label for="contact" class="begin">Your Message</label>
+            <label for="contact" class="begin">Your Message:</label>
             <textarea v-model="body" id="contact" class="inputfield" name="contact" placeholder="Write something here..." style="height:200px" required></textarea>
           </div>
           <div class="modal-footer">
