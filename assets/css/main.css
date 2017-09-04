@@ -1750,7 +1750,7 @@
 		padding: 0.75em 1em;
 	}
 
-	input[type="checkbox"],
+	/*input[type="checkbox"],
 	input[type="radio"] {
 		-moz-appearance: none;
 		-webkit-appearance: none;
@@ -1820,7 +1820,7 @@
 
 	input[type="radio"] + label:before {
 		border-radius: 100%;
-	}
+	}*/
 
 	::-webkit-input-placeholder {
 		color: rgba(255, 255, 255, 0.5) !important;
@@ -2693,7 +2693,7 @@
 				color: rgba(0, 0, 0, 0.125);
 			}
 
-			.wrapper.style1 input[type="checkbox"] + label,
+			/*.wrapper.style1 input[type="checkbox"] + label,
 			.wrapper.style1 input[type="radio"] + label {
 				color: #c7ebe8;
 			}
@@ -2707,7 +2707,7 @@
 			.wrapper.style1 input[type="radio"]:checked + label:before {
 				background: #ffffff;
 				color: #21b2a6;
-			}
+			}*/
 
 			.wrapper.style1 ::-webkit-input-placeholder {
 				color: #a6e0db !important;
@@ -2851,7 +2851,7 @@
 				color: rgba(0, 0, 0, 0.125);
 			}
 
-			.wrapper.style3 input[type="checkbox"] + label,
+			/*.wrapper.style3 input[type="checkbox"] + label,
 			.wrapper.style3 input[type="radio"] + label {
 				color: #d3d4e4;
 			}
@@ -2865,7 +2865,7 @@
 			.wrapper.style3 input[type="radio"]:checked + label:before {
 				background: #ffffff;
 				color: #505393;
-			}
+			}*/
 
 			.wrapper.style3 ::-webkit-input-placeholder {
 				color: #b9bad3 !important;
@@ -3009,7 +3009,7 @@
 				color: #dfdfdf;
 			}
 
-			.wrapper.style5 input[type="checkbox"] + label,
+			/*.wrapper.style5 input[type="checkbox"] + label,
 			.wrapper.style5 input[type="radio"] + label {
 				color: #4E4852;
 			}
@@ -3023,7 +3023,7 @@
 			.wrapper.style5 input[type="radio"]:checked + label:before {
 				background: #2E3842;
 				color: #ffffff;
-			}
+			}*/
 
 			.wrapper.style5 ::-webkit-input-placeholder {
 				color: #8E8892 !important;
