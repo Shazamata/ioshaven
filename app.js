@@ -5,7 +5,9 @@ var io = require('socket.io')(server)
 server.listen(8000)
 var Redis = require('ioredis');
 var redis = new Redis();
-var nunjucks =require('nunjucks')
+var _ =require('lodash')
+const bodyParser  =  require('body-parser')
+var nunjucks = require('nunjucks')
 nunjucks.configure('views', {
   autoescape: true,
   express: app
@@ -13,6 +15,11 @@ nunjucks.configure('views', {
 
 app.use(express.static('assets'))
 app.use(express.static('favicomatic'))
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
+
+var env = require('./env.json')
+
 app.get('/', home)
 app.get('/ipas', apps)
 app.get('/signed', apps)
@@ -22,7 +29,9 @@ app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
-app.get('/contact', contact)
+app.get('/admin', admin)
+app.post('/contact', contact)
+app.post('/admin', login)
 
 
 function home(req, res) {
@@ -47,5 +56,30 @@ function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
 }
 function contact(req,res) {
-  res.render('contact.html', {title: 'Contact - iOS Haven'})
+  redis.lpush("contactList", JSON.stringify(req.body))
+  res.end("delete")
+}
+function admin(req, res) {
+  res.render('admin.html', {
+    title: 'Admin - iOS Haven',
+    showlogin: true
+  })
+}
+function login(req, res){
+  if (req.body.password === env.password ) {
+    redis.lrange("contactList", 0, -1)
+    .then((results)=>{
+      var newArray = []
+      _.forEach(results, function(value,key){
+        value = JSON.parse(value)
+        newArray.push(value)
+      })
+        res.render('admin.html', {
+          title: 'Admin - iOS Haven',
+          contactdata: newArray,
+          showlogin: false
+        })
+    })
+
+  }
 }

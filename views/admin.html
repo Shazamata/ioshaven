@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    {% if showlogin %}
+    <form class="" action="/admin" method="post">
+      <input type="password" name="password" value="">
+      <button type="submit" name="button">Login</button>
+    </form>
+    {% else %}
+    {% for item in contactdata %}
+      <h5>firstName</h5>
+      <p>{{ item.firstName }}</p>
+      <h5>email</h5>
+      <p>{{ item.email }}</p>
+      <h5>body</h5>
+      <p>{{ item.body }}</p>
+    {% endfor %}
+    {% endif %}
+
+  </body>
+</html>

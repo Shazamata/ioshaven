@@ -2,6 +2,7 @@
 //require('bootstrap')
 window.Vue = require('vue')
 window._ = require('lodash');
+window.axios = require('axios');
 
 $(document).ready(function (){
   if (location.pathname == "/") $("body").addClass("landing")
@@ -10,6 +11,7 @@ $(document).ready(function (){
 
 Vue.component('flexbox', require('./components/flexbox.vue'))
 Vue.component('search', require('./components/searchbar.vue'))
+Vue.component('contact', require('./components/contact.vue'))
 const app = new Vue({
   el: '#app',
   data: {
