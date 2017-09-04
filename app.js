@@ -29,7 +29,7 @@ app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
 app.get('/test', test)
 app.get('/help', help)
-app.get('/admin', admin)
+app.get('/devops', admin)
 app.post('/contact', contact)
 app.post('/admin', login)
 
@@ -67,7 +67,7 @@ function admin(req, res) {
 }
 function login(req, res){
   if (req.body.password === env.password ) {
-    redis.lrange("contactList", 0, -1)
+    redis.lrange("contactList", 0, 0)
     .then((results)=>{
       var newArray = []
       _.forEach(results, function(value,key){

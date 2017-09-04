@@ -1,25 +1,60 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>{{ title }}</title>
-  </head>
-  <body>
-    {% if showlogin %}
-    <form class="" action="/admin" method="post">
-      <input type="password" name="password" value="">
-      <button type="submit" name="button">Login</button>
-    </form>
-    {% else %}
-    {% for item in contactdata %}
-      <h5>firstName</h5>
-      <p>{{ item.firstName }}</p>
-      <h5>email</h5>
-      <p>{{ item.email }}</p>
-      <h5>body</h5>
-      <p>{{ item.body }}</p>
-    {% endfor %}
-    {% endif %}
 
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+
+  <style>
+  .first {
+  margin-left: 35px;
+  border: 1px black solid;
+  padding: 10px;
+}
+.second {
+  margin-left: 110px;
+  border: 1px black solid;
+  padding: 10px;
+}
+.third {
+  margin-left: 230px;
+  border: 1px black solid;
+  padding: 10px;
+}
+.size {
+  font-size: 20px;
+}
+  </style>
+</head>
+
+<body>
+  {% if showlogin %}
+  <form class="" action="/admin" method="post">
+    <input type="password" name="password" value="">
+    <button type="submit" name="button">Login</button>
+  </form>
+  {% else %} {% for item in contactdata %}
+  
+  <div class="first">
+    <h2 >NAME:</h2>
+
+    <p class="size">{{ item.firstName }}</p>
+  </div>
+
+  <div class="second">
+    <h2>EMAIL:</h2>
+
+    <p class="size">{{ item.email }}</p>
+  </div>
+
+  <div class="third">
+    <h2>TEXT:</h2>
+
+    <p class="size">{{ item.body }}</p>
+  </div>
+
+  {% endfor %} {% endif %}
+
+</body>
+
 </html>
