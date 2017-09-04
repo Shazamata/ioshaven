@@ -9,14 +9,14 @@
           </button>
         </div>
         <div class="modal-body">
-            <label for="firstname" class="begin">First Name:</label>
-            <input v-model="firstName" type="text" class="form-control inputfield" id="firstname" name="firstname" placeholder="Name" required />
+            <label for="firstname" class="begin">Name:</label>
+            <input v-model="firstName" type="text" class="form-control inputfield" id="firstname" name="firstname" placeholder="Your name..." required />
 
             <label for="email" class="begin">Email:</label>
             <input v-model="email" type="email" class="inputfield" id="email" name="email" placeholder="Your email..." required />
 
-            <label for="contact" class="begin">Contact Us Here!</label>
-            <textarea v-model="body" id="contact" class="inputfield" name="contact" placeholder="Your message:" style="height:200px" required></textarea>
+            <label for="contact" class="begin">Your Message:</label>
+            <textarea v-model="body" id="contact" class="inputfield" name="contact" placeholder="Write something here..." style="height:200px" required></textarea>
           </div>
           <div class="modal-footer">
             <button class="btn btn-danger border" data-dismiss="modal">Close</button>
