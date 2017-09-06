@@ -2,7 +2,7 @@
   {
     "title": "Instagram++",
     "image": "/app-icons/instagram.png",
-    "version": "12.0",
+    "version": "13.0",
     "desc": "Upgrade your Instagram expierence with Instagram++.",
     "dl": "http://destyy.com/q3Yd4y",
     "signed": "http://clkmein.com/q2FuL9"
@@ -10,7 +10,7 @@
   {
     "title": "Instagram Rocket",
     "image": "/app-icons/instagram.png",
-    "version": "12.0",
+    "version": "13.0",
     "desc": "Upgrade your Instagram expierence with Instagram Rocket.",
     "dl": "http://destyy.com/q3Yfu8",
     "signed": "http://clkmein.com/q2Fu5A"
@@ -57,7 +57,7 @@
   {
         "title": "Youtube++",
         "image": "/app-icons/youtube.png",
-        "version": "12.33",
+        "version": "12.34",
         "desc": "Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!",
         "dl": "http://destyy.com/q3YfDa",
         "signed": "http://clkmein.com/q2Fi5W"
@@ -81,7 +81,7 @@
   {
     "title": "Facebook++",
     "image": "/app-icons/facebook.png",
-    "version": "138.0",
+    "version": "139",
     "desc": "Upgrade your Facebook expierence with Facebook++.",
     "dl": "http://clkmein.com/q2IERa",
     "signed": "http://clkmein.com/q2FoTq"
@@ -89,7 +89,7 @@
   {
     "title": "WhatsApp++",
     "image": "/app-icons/whatsapp.png",
-    "version": "2.17.51",
+    "version": "2.17.52",
     "desc": "Upgrade your WhatsApp expierence with WhatsApp++.",
     "dl": "http://destyy.com/q3Ygh6",
     "signed": "http://clkmein.com/q2FoN4"
@@ -105,7 +105,7 @@
   {
     "title": "WhatsApp Watusi",
     "image": "/app-icons/whatsapp.png",
-    "version": "2.17.51",
+    "version": "2.17.52",
     "desc": "Upgrade your WhatsApp expierence with WhatsApp Watusi.",
     "dl": "http://destyy.com/q3YgAa",
     "signed": "http://clkmein.com/q2FpeC"
@@ -128,7 +128,7 @@
   {
     "title": "Spotify++",
     "image": "/app-icons/spotify.png",
-    "version": "8.4.16",
+    "version": "8.4.17",
     "desc": "Upgrade your Spotify expierence with Spotify++. Obtain Spotify Premium for free!",
     "dl": "http://destyy.com/q3YgL3",
     "signed": "http://clkmein.com/q2FpxX"
@@ -136,7 +136,7 @@
   {
     "title": "SoundCloud++",
     "image": "/app-icons/soundcloud.png",
-    "version": "5.11",
+    "version": "5.12",
     "desc": "Upgrade your SoundCloud expierence with SoundCloud++. Obtain Soundcloud Go+ for free!",
     "dl": "http://clkmein.com/qBVqkj",
     "signed": "http://clkmein.com/q2Fpm5"
@@ -151,7 +151,7 @@
   {
     "title": "Deezer++",
     "image": "/app-icons/deezer.png",
-    "version": "6.23",
+    "version": "6.24",
     "desc": "Upgrade your Deezer expierence with Deezer++. Obtain Deezer Premium+ for free!",
     "dl": "http://gestyy.com/q2xunJ",
     "signed": "http://clkmein.com/q2FpTA"
@@ -211,10 +211,10 @@
     "signed": "http://clkmein.com/q2FaDQ"
   },
   {
-    "title": "PokeGo++",
+    "title": "PokeGo++ 2.0",
     "image": "/app-icons/pogo.png",
-    "version": "2.0",
-    "desc": "Upgrade your Pokemon Go expierence with PokeGo++. Obtain features like teleporting and more!",
+    "version": "r40",
+    "desc": "Upgrade your Pokemon Go expierence with PokeGo++ 2.0. Obtain features like teleporting and more!",
     "dl": "http://gestyy.com/q2xsks",
     "signed": "http://clkmein.com/q2FaNd"
   },
@@ -236,7 +236,7 @@
   {
     "title": "Bobby Movie",
     "image": "/app-icons/bmovie.png",
-    "version": "3.1.5",
+    "version": "3.1.6",
     "desc": "Watch movies that are in the theatre and TV shows for free with Bobby Movie.",
     "dl": "http://gestyy.com/q2xfCI",
     "signed": "http://destyy.com/q3YXrV"
@@ -512,7 +512,7 @@
     "image": "/app-icons/yalu.png",
     "version": "b7",
     "desc": "Jailbreak devices running iOS 10-10.2.",
-    "signed": "http://clkmein.com/q2FsHs"
+    "signed": "http://destyy.com/q48Voy"
   },
   {
     "title": "Pangu",
@@ -520,6 +520,13 @@
     "version": "1.1",
     "desc": "Jailbreak devices running iOS 9.2-9.3.3",
     "signed": "http://clkmein.com/q2FsXu"
+  },
+  {
+    "title": "Phoenix",
+    "image": "/app-icons/phoenix.png",
+    "version": "3",
+    "desc": "Jailbreak devices running iOS 9.3.5",
+    "signed": "http://destyy.com/q48MgH"
   },
   {
     "title": "AeroTV",
@@ -561,7 +568,7 @@
   {
     "title": "Saavn++",
     "image": "/app-icons/saavn.png",
-    "version": "5.7",
+    "version": "5.9",
     "desc": "Listen to your favorite hindi songs for free.",
     "dl": "http://ceesty.com/q4vl3z"
   }
