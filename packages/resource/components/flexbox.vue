@@ -27,39 +27,10 @@ img {
   height: 150px;
 }
 
-/*.center {
-  text-align: center;
-  height: 60px;
-  margin-bottom: 10px;
-}*/
-
 .desc {
   height: 200px;
   overflow-y: auto;
 }
-
-/*.center-block {
-  display: block;
-  margin: 0 auto;
-}*/
-
-/*.center-dl {
-  position: absolute;
-  bottom: 105px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  padding: 30px 88px;
-}
-
-.center-s-dl {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  padding: 30px 101px;
-}*/
 
 h4 {
     text-overflow: ellipsis;
@@ -89,8 +60,4 @@ h4 {
 .inside * {
   color: black;
 }
-/*.color-black {
-  color: black;
-  text-transform: none !important;
-}*/
 </style>
