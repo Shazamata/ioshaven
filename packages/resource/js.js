@@ -25,6 +25,7 @@ const app = new Vue({
       this.searchResults = _.sortBy(this.apps, [function (o){
         return o.title.toLowerCase()
       }])
+      //
 
 
       this.searchResults = _.filter(this.searchResults, (o) =>{
