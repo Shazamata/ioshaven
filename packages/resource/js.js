@@ -12,6 +12,8 @@ $(document).ready(function (){
 Vue.component('flexbox', require('./components/flexbox.vue'))
 Vue.component('search', require('./components/searchbar.vue'))
 Vue.component('contact', require('./components/contact.vue'))
+Vue.component('popup', require('./components/popup.vue'))
+
 const app = new Vue({
   el: '#app',
   data: {

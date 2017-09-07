@@ -5,7 +5,15 @@
     <img :src='image' class="center-block" />
     <br>
     <p class="center color-black">{{version}}</p>
-    <p class="desc center color-black">{{desc}}</p>
+    <!-- <p class="desc center color-black">{{desc}}</p> -->
+    <popup
+      :image="image"
+      :title="title"
+      :description="desc"
+      :dl="dl"
+      :signed="signed"
+      :version="version"
+    ></popup>
     <a v-if="signed" :href="signed" class="btn btn-success center-dl center-s-dl">Install Signed</a>
     <a v-if="dl" :href="dl" class="btn btn-primary center-dl">Download .ipa</a>
   </div>
