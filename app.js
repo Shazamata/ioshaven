@@ -51,10 +51,9 @@ function jailbreaks(req, res) {
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
 }
-function test(req, res, next) {
-  // var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-  res.send(req.ip)
-  next()
+function test(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(req.headers))
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
