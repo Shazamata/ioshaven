@@ -6,9 +6,9 @@ server.listen(8000)
 var Redis = require('ioredis');
 var redis = new Redis();
 var _ =require('lodash')
-var getRealIp = require('express-real-ip')()
 const bodyParser  =  require('body-parser')
 var nunjucks = require('nunjucks')
+const axios = require('axios')
 nunjucks.configure('views', {
   autoescape: true,
   express: app
@@ -18,7 +18,7 @@ app.use(express.static('assets'))
 app.use(express.static('favicomatic'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-app.use(getRealIp)
+
 
 var env = require('./env.json')
 
@@ -29,11 +29,12 @@ app.get('/apps', apps)
 app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
-app.get('/test', test)
+app.get('/demo', test)
 app.get('/help', help)
 app.get('/devops', admin)
 app.post('/contact', contact)
 app.post('/admin', login)
+app.get('/donate', donate)
 
 
 function home(req, res) {
@@ -53,7 +54,9 @@ function credits(req, res) {
 }
 function test(req, res) {
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(req.headers))
+  redis.lpush('ips', JSON.stringify(req.headers))
+  res.redirect('/')
+  // res.send(JSON.stringify(req.headers))
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
@@ -85,4 +88,13 @@ function login(req, res){
     })
 
   }
+}
+
+function donate(req, res) {
+  axios.post('https://www.paypal.com/cgi-bin/webscr', {
+    "cmd": "_s-xclick",
+    "hosted_button_id": "E8QZHGDDUQAGY",
+  }).then((r) => {
+    res.send(r.data)
+  })
 }

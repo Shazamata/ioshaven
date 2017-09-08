@@ -1194,6 +1194,11 @@ window.axios = __webpack_require__(17);
 
 $(document).ready(function () {
   if (location.pathname == "/") $("body").addClass("landing");
+  $('#paypalDonate').hide();
+  $('.paypalDonateTrigger').click(function (e) {
+    e.preventDefault();
+    $('#paypalDonate').submit();
+  });
   console.log(location.pathname);
 });
 
@@ -30235,13 +30240,13 @@ if (false) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(65)
+  __webpack_require__(54)
 }
 var Component = __webpack_require__(3)(
   /* script */
   __webpack_require__(56),
   /* template */
-  __webpack_require__(64),
+  __webpack_require__(57),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -30273,8 +30278,46 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */,
-/* 55 */,
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(55);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("cf064072", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43a1474a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43a1474a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n.desc[data-v-43a1474a] {\n  padding: 30px;\n  width: 100%;\n  color: #444 !important;\n  margin: 4px 0px;\n  background: transparent;\n  border: 1px solid #444;\n}\n.win[data-v-43a1474a] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  background: white;\n  border: 2px solid #000;\n  box-shadow: 0px 2px 29px 10000px rgba(0, 0, 0, 0.75);\n  border-radius: 5px;\n  z-index: 999999;\n  max-width: 960px;\n  margin: 30px auto;\n}\n@media screen and (max-width: 576px) {\n.win[data-v-43a1474a] {\n      margin: 10px auto !important;\n}\n}\n@media screen and (max-width: 768px) {\n.win[data-v-43a1474a] {\n      margin: 20px auto !important;\n}\n}\n@media screen and (max-width: 992px) {\n.win[data-v-43a1474a] {\n      margin: 50px auto !important;\n}\n}\n.win-content[data-v-43a1474a] {\n  padding: 2em;\n  border-bottom: 1px solid #ccc;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  text-align: left;\n  color: #333;\n}\n.win-content.win-header[data-v-43a1474a] {\n  height: 5em;\n}\n.win-content.win-body[data-v-43a1474a] {\n  align-items: start;\n  border-bottom: none;\n  padding: 1em 1.5em 2em;\n  font-size: 1.3em;\n  letter-spacing: 0.7px;\n  line-height: 1.4em;\n  max-height: 50vh;\n  overflow-y: auto;\n}\n.win-header span[data-v-43a1474a] {\n  font-size: 1.2em;\n  font-weight: 600;\n}\n.appIMG[data-v-43a1474a] {\n  display: inline-block;\n  padding: 50px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: contain;\n  margin-right: 20px;\n  float: left;\n}\n.title[data-v-43a1474a] {\n  font-size: 1.4em !important;\n  max-width: 70%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: pre;\n}\n.win-footer[data-v-43a1474a] {\n  border-top: 1px solid #ccc;\n  padding: 1em 2em;\n  font-size: 1em;\n}\n@media screen and (max-width: 576px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.7em;\n}\n}\n@media screen and (max-width: 400px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.6em;\n}\n}\n.win-footer .span[data-v-43a1474a] {\n    color: #aaa !important;\n    font-size: inherit !important;\n}\n.win-footer div[data-v-43a1474a] {\n    text-align: right;\n}\n.win-footer a[data-v-43a1474a] {\n    padding: 1.5em;\n    font-size: inherit !important;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30330,19 +30373,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 57 */,
-/* 58 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -30401,44 +30432,10 @@ if (false) {
 }
 
 /***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 58 */
+/***/ (function(module, exports) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(66);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("cf064072", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43a1474a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-43a1474a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.desc[data-v-43a1474a] {\n  padding: 30px;\n  width: 100%;\n  color: #444 !important;\n  margin: 4px 0px;\n  background: transparent;\n  border: 1px solid #444;\n}\n.win[data-v-43a1474a] {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  background: white;\n  border: 2px solid #000;\n  box-shadow: 0px 2px 29px 10000px rgba(0, 0, 0, 0.75);\n  border-radius: 5px;\n  z-index: 999999;\n  max-width: 960px;\n  margin: 30px auto;\n}\n@media screen and (max-width: 576px) {\n.win[data-v-43a1474a] {\n      margin: 10px auto !important;\n}\n}\n@media screen and (max-width: 768px) {\n.win[data-v-43a1474a] {\n      margin: 20px auto !important;\n}\n}\n@media screen and (max-width: 992px) {\n.win[data-v-43a1474a] {\n      margin: 50px auto !important;\n}\n}\n.win-content[data-v-43a1474a] {\n  padding: 2em;\n  border-bottom: 1px solid #ccc;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  text-align: left;\n  color: #333;\n}\n.win-content.win-header[data-v-43a1474a] {\n  height: 5em;\n}\n.win-content.win-body[data-v-43a1474a] {\n  align-items: start;\n  border-bottom: none;\n  padding: 1em 1.5em 2em;\n  font-size: 1.3em;\n  letter-spacing: 0.7px;\n  line-height: 1.4em;\n  max-height: 50vh;\n  overflow-y: auto;\n}\n.win-header span[data-v-43a1474a] {\n  font-size: 1.2em;\n  font-weight: 600;\n}\n.appIMG[data-v-43a1474a] {\n  display: inline-block;\n  padding: 50px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: contain;\n  margin-right: 20px;\n  float: left;\n}\n.title[data-v-43a1474a] {\n  font-size: 1.4em !important;\n  max-width: 70%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: pre;\n}\n.win-footer[data-v-43a1474a] {\n  border-top: 1px solid #ccc;\n  padding: 1em 2em;\n  font-size: 1em;\n}\n@media screen and (max-width: 576px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.7em;\n}\n}\n@media screen and (max-width: 400px) {\n.win-footer[data-v-43a1474a] {\n      font-size: 0.6em;\n}\n}\n.win-footer .span[data-v-43a1474a] {\n    color: #aaa !important;\n    font-size: inherit !important;\n}\n.win-footer div[data-v-43a1474a] {\n    text-align: right;\n}\n.win-footer a[data-v-43a1474a] {\n    padding: 1.5em;\n    font-size: inherit !important;\n}\n", ""]);
-
-// exports
-
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

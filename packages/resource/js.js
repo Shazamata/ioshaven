@@ -6,6 +6,11 @@ window.axios = require('axios');
 
 $(document).ready(function (){
   if (location.pathname == "/") $("body").addClass("landing")
+  $('#paypalDonate').hide()
+  $('.paypalDonateTrigger').click(function(e) {
+    e.preventDefault()
+    $('#paypalDonate').submit()
+  })
   console.log(location.pathname);
 })
 
