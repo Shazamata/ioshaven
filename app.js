@@ -6,6 +6,7 @@ server.listen(8000)
 var Redis = require('ioredis');
 var redis = new Redis();
 var _ =require('lodash')
+var getRealIp = require('express-real-ip')()
 const bodyParser  =  require('body-parser')
 var nunjucks = require('nunjucks')
 nunjucks.configure('views', {
@@ -17,6 +18,7 @@ app.use(express.static('assets'))
 app.use(express.static('favicomatic'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+app.use(getRealIp)
 
 var env = require('./env.json')
 
@@ -49,8 +51,10 @@ function jailbreaks(req, res) {
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
 }
-function test(req, res) {
-  res.render('test.html')
+function test(req, res, next) {
+  // var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+  res.send(req.ip)
+  next()
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
