@@ -30570,7 +30570,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.content[data-v-ccffdc1e] {\n    display: flex;\n    justify-content: space-between;\n}\n.list[data-v-ccffdc1e] {\n    justify-content: space-between;\n}\n.list[data-v-ccffdc1e]:hover{\n  background-color: #eee;\n}\nspan.subject[data-v-ccffdc1e] {\n    font-size: 1.5rem;\n    font-weight: bold;\n    margin-right: 1rem;\n}\nspan.preview[data-v-ccffdc1e] {\n    max-width: 15rem;\n    display: inline-block;\n    white-space: pre;\n    overflow: hidden;\n    flex-basis: auto;\n    flex-grow: 1;\n    margin-right: 2rem;\n}\nspan.text[data-v-ccffdc1e]{\n  font-size: 1.3rem;\n}\n.content div[data-v-ccffdc1e] {\n    display: flex;\n    align-items: center;\n}\nspan.time[data-v-ccffdc1e] {\n    margin-right: 2rem;\n}\n", ""]);
+exports.push([module.i, "\n.content[data-v-ccffdc1e] {\n    display: flex;\n    justify-content: space-between;\n}\n.list[data-v-ccffdc1e] {\n    justify-content: space-between;\n}\n.list[data-v-ccffdc1e]:hover{\n  background-color: #eee;\n}\nspan.subject[data-v-ccffdc1e] {\n    font-size: 1.5rem;\n    font-weight: bold;\n    margin-right: 1rem;\n}\nspan.preview[data-v-ccffdc1e] {\n    max-width: 15rem;\n    display: inline-block;\n    white-space: pre;\n    overflow: hidden;\n    flex-basis: auto;\n    flex-grow: 1;\n    margin-right: 2rem;\n    text-overflow: ellipsis;\n}\nspan.text[data-v-ccffdc1e]{\n  font-size: 1.3rem;\n}\n.content div[data-v-ccffdc1e] {\n    display: flex;\n    align-items: center;\n}\nspan.time[data-v-ccffdc1e] {\n    margin-right: 2rem;\n}\n", ""]);
 
 // exports
 
@@ -30706,7 +30706,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "subject"
   }, [_vm._v(_vm._s(_vm.subject) + ":")]), _vm._v(" "), _c('span', {
     staticClass: "preview text"
-  }, [_vm._v(_vm._s(_vm.body) + "...")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.body))])])]), _vm._v(" "), _c('div', {
     staticClass: "buttons"
   }, [_c('span', {
     staticClass: "time"

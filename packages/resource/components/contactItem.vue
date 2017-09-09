@@ -4,7 +4,7 @@
     <div class="content">
       <div class="">
         <span class="subject">{{subject}}:</span>
-        <span class="preview text">{{body}}...</span>
+        <span class="preview text">{{body}}</span>
 
       </div>
 
@@ -128,6 +128,7 @@ span.preview {
     flex-basis: auto;
     flex-grow: 1;
     margin-right: 2rem;
+    text-overflow: ellipsis;
 }
 span.text{
   font-size: 1.3rem;
