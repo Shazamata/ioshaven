@@ -30,11 +30,11 @@ app.get('/apps', apps)
 app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
-app.get('/demo', test)
+app.get('/demo', ips)
 app.get('/help', help)
 app.get('/devops', admin)
 app.post('/contact', contact)
-app.post('/admin', login)
+app.post('/devops', login)
 app.get('/donate', donate)
 app.post('/get/contacts', getContacts)
 app.post('/drop/contact', dropContact)
@@ -54,7 +54,7 @@ function jailbreaks(req, res) {
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
 }
-function test(req, res) {
+function ips(req, res) {
   res.setHeader('Content-Type', 'application/json');
   redis.lpush('ips', JSON.stringify(req.headers))
   res.redirect('/')
@@ -93,6 +93,7 @@ function login(req, res){
       showlogin: false
     })
   }
+  else ips(req, res)
 }
 
 function donate(req, res) {
