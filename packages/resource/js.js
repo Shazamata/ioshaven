@@ -11,7 +11,6 @@ $(document).ready(function (){
     e.preventDefault()
     $('#paypalDonate').submit()
   })
-  console.log(location.pathname);
 })
 
 Vue.component('flexbox', require('./components/flexbox.vue'))
@@ -73,7 +72,6 @@ const devops = new Vue({
         this.contacts = result.data
         this.contactsEmpty = true
         _.forEach(this.contacts,  (c) => {
-          console.log(c.deleted);
           if (c.deleted === false) this.contactsEmpty = false
         })
       })

@@ -1199,7 +1199,6 @@ $(document).ready(function () {
     e.preventDefault();
     $('#paypalDonate').submit();
   });
-  console.log(location.pathname);
 });
 
 Vue.component('flexbox', __webpack_require__(37));
@@ -1262,7 +1261,6 @@ var devops = new Vue({
         _this2.contacts = result.data;
         _this2.contactsEmpty = true;
         _.forEach(_this2.contacts, function (c) {
-          console.log(c.deleted);
           if (c.deleted === false) _this2.contactsEmpty = false;
         });
       });
