@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="/css/whateveryouwant.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/fa/css/font-awesome.min.css">
 
-  <!-- <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
+  <link rel="stylesheet" href="/fa/css/font-awesome-brands.css">
+  <link rel="stylesheet" href="/fa/css/font-awesome-core.css">
+  <link rel="stylesheet" href="/fa/css/font-awesome-light.css">
+  <link rel="stylesheet" href="/fa/css/font-awesome-regular.css">
+  <link rel="stylesheet" href="/fa/css/font-awesome-solid.css">
+
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png" />
   <link rel="apple-touch-icon-precomposed" sizes="60x60" href="apple-touch-icon-60x60.png" />
   <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-120x120.png" />
   <link rel="apple-touch-icon-precomposed" sizes="76x76" href="apple-touch-icon-76x76.png" />
-  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" /> -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="apple-touch-icon-152x152.png" />
   <link rel="icon" type="image/png" href="favicon-196x196.png" sizes="196x196" />
   <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
@@ -82,48 +84,13 @@
   <!-- ======= THIS IS BREAKING THE CONTACT FORM LINKS ======== -->
   <!-- ======= THIS IS BREAKING THE CONTACT FORM LINKS ======== -->
 
+  <!-- P A Y P A L   D O N A T E   B U T T O N -->
+  <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" id="paypalDonate">
+    <input type="hidden" name="cmd" value="_s-xclick">
+    <input type="hidden" name="hosted_button_id" value="E8QZHGDDUQAGY">
+    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+  </form>
+
 
 </head>
-
-{% include 'includes/header.html' %}
-
-<body>
-  <!-- CHANGE COLOR AND TEXT COLOR -->
-  <style>
-    a,
-    a:hover a img {
-      text-decoration: none;
-      border: 0;
-    }
-
-    .row.justify.color {
-      margin-left: 5px;
-      background-color: #eee;
-    }
-
-    body {
-      background-color: #eee;
-    }
-
-    .cyrus {
-      margin-top: 15px;
-      margin-left: -50px;
-      height: 50px;
-    }
-  </style>
-  <!-- END STYLE -->
-
-  {% include 'includes/_navbar.html' %}
-  <!-- {-% include 'includes/_messages.html' %} -->
-  <div id="app">
-    {% block body %}{% endblock %}
-    <contact></contact>
-  </div>
-
-  {% include 'includes/footer.html' %}
-
-
-
-</body>
-
-</html>

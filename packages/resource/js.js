@@ -6,19 +6,25 @@ window.axios = require('axios');
 
 $(document).ready(function (){
   if (location.pathname == "/") $("body").addClass("landing")
-  console.log(location.pathname);
+  $('#paypalDonate').hide()
+  $('.paypalDonateTrigger').click(function(e) {
+    e.preventDefault()
+    $('#paypalDonate').submit()
+  })
 })
 
 Vue.component('flexbox', require('./components/flexbox.vue'))
 Vue.component('search', require('./components/searchbar.vue'))
 Vue.component('contact', require('./components/contact.vue'))
 Vue.component('popup', require('./components/popup.vue'))
+Vue.component('contactitem', require('./components/contactItem.vue'))
 
 const app = new Vue({
   el: '#app',
   data: {
     apps: require('./sideload-apps.json'),
     searchResults: require('./sideload-apps.json'),
+    contact: {},
     store: ""
   },
   methods: {
@@ -48,5 +54,28 @@ const app = new Vue({
 
       //  console.log(testing);
     },
+  }
+})
+
+
+const devops = new Vue({
+  el: '#devops',
+  data: {
+    contacts: null,
+    cron: '',
+    contactsEmpty: true,
+  },
+  mounted() {
+    this.cron = setInterval(()=> {
+      axios.post('/get/contacts')
+      .then((result) => {
+        this.contacts = result.data
+        this.contactsEmpty = true
+        _.forEach(this.contacts,  (c) => {
+          if (c.deleted === false) this.contactsEmpty = false
+        })
+      })
+    }, 1000)
+
   }
 })

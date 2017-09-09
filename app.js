@@ -6,9 +6,10 @@ server.listen(8000)
 var Redis = require('ioredis');
 var redis = new Redis();
 var _ =require('lodash')
-var getRealIp = require('express-real-ip')()
 const bodyParser  =  require('body-parser')
 var nunjucks = require('nunjucks')
+const axios = require('axios')
+const crypto = require('crypto')
 nunjucks.configure('views', {
   autoescape: true,
   express: app
@@ -18,7 +19,11 @@ app.use(express.static('assets'))
 app.use(express.static('favicomatic'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+<<<<<<< HEAD
 app.set("trust proxy",["loopback", "linklocal", "uniquelocal"])
+=======
+
+>>>>>>> master
 
 var env = require('./env.json')
 
@@ -29,12 +34,14 @@ app.get('/apps', apps)
 app.get('/betas', betas)
 app.get('/jailbreaks', jailbreaks)
 app.get('/credits', credits)
-app.get('/test', test)
+app.get('/demo', ips)
 app.get('/help', help)
 app.get('/devops', admin)
 app.post('/contact', contact)
-app.post('/admin', login)
-
+app.post('/devops', login)
+app.get('/donate', donate)
+app.post('/get/contacts', getContacts)
+app.post('/drop/contact', dropContact)
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -51,16 +58,37 @@ function jailbreaks(req, res) {
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
 }
+<<<<<<< HEAD
 function test(req, res, next) {
   // var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
   res.send(req.ips)
   next()
+=======
+function ips(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  redis.lpush('ips', JSON.stringify(req.headers))
+  res.redirect('/')
+  // res.send(JSON.stringify(req.headers))
+>>>>>>> master
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
 }
 function contact(req,res) {
-  redis.lpush("contactList", JSON.stringify(req.body))
+  var uniqueID = crypto.randomBytes(128).toString('base64')
+  let tz = new Date().getTimezoneOffset()/60
+  let sign = (tz < 0) ? '+':'-'
+  redis.hsetnx("contactList", uniqueID, JSON.stringify({
+    uid: uniqueID,
+    firstname: req.body.firstName,
+    email: req.body.email,
+    body: req.body.body,
+    subject: req.body.subject,
+    timezone: parseInt(sign + tz),
+    time: new Date( Date.now() ).getTime(),
+    platform: req.headers['user-agent'],
+    deleted: false
+  }))
   res.end("delete")
 }
 function admin(req, res) {
@@ -71,19 +99,40 @@ function admin(req, res) {
 }
 function login(req, res){
   if (req.body.password === env.password ) {
-    redis.lrange("contactList", 0, 0)
-    .then((results)=>{
-      var newArray = []
-      _.forEach(results, function(value,key){
-        value = JSON.parse(value)
-        newArray.push(value)
-      })
-        res.render('admin.html', {
-          title: 'Admin - iOS Haven',
-          contactdata: newArray,
-          showlogin: false
-        })
+    res.render('admin.html', {
+      title: 'Admin - iOS Haven',
+      showlogin: false
     })
-
   }
+  else ips(req, res)
+}
+
+function donate(req, res) {
+  axios.post('https://www.paypal.com/cgi-bin/webscr', {
+    "cmd": "_s-xclick",
+    "hosted_button_id": "E8QZHGDDUQAGY",
+  }).then((r) => {
+    res.send(r.data)
+  })
+}
+
+function getContacts(req, res){
+  redis.hgetall("contactList")
+  .then((results)=>{
+    var newObject = {}
+    _.forEach(results, function(value,key){
+      value = JSON.parse(value)
+      newObject[value.uid] = value
+    })
+    res.send(newObject)
+  })
+}
+
+function dropContact(req, res){
+  var newObject = req.body
+  newObject.deleted = true
+  redis.hset('contactList', req.body.uid, JSON.stringify(newObject))
+  .then(r=>{
+    res.end('ended')
+  })
 }
