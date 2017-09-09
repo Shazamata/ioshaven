@@ -15,6 +15,9 @@
             <label for="email" class="begin">Email:</label>
             <input v-model="email" type="email" class="inputfield" id="email" name="email" placeholder="Your email..." required />
 
+            <label for="subject" class="begin">Subject:</label>
+            <input v-model="subject" type="text" class="form-control inputfield" id="subject" name="firstname" placeholder="Your subject..." required />
+
             <label for="contact" class="begin">Your Message:</label>
             <textarea v-model="body" id="contact" class="inputfield" name="contact" placeholder="Write something here..." style="height:200px" required></textarea>
           </div>
@@ -34,7 +37,8 @@ export default {
     return {
       firstName: "",
       email: "",
-      body: ""
+      body: "",
+      subject: ""
     }
   },
   methods: {
@@ -53,17 +57,20 @@ export default {
       if (
         this.validate("#firstname") &&
         this.validate("#email", "@") &&
-        this.validate("#contact")
+        this.validate("#contact") &&
+        this.validate('#subject')
       ) {
         axios.post("/contact", {
             firstName: this.firstName,
             email: this.email,
-            body: this.body
+            body: this.body,
+            subject: this.subject
           })
           .then(function(response) {
             $("#firstname").val("")
             $("#email").val("")
             $("#contact").val("")
+            $("#subject").val("")
             $("#contactform").modal("toggle")
           })
       }

@@ -9,6 +9,7 @@ var _ =require('lodash')
 const bodyParser  =  require('body-parser')
 var nunjucks = require('nunjucks')
 const axios = require('axios')
+const crypto = require('crypto')
 nunjucks.configure('views', {
   autoescape: true,
   express: app
@@ -35,7 +36,8 @@ app.get('/devops', admin)
 app.post('/contact', contact)
 app.post('/admin', login)
 app.get('/donate', donate)
-
+app.post('/get/contacts', getContacts)
+app.post('/drop/contact', dropContact)
 
 function home(req, res) {
   res.render('index.html', {title: 'iOS Haven'})
@@ -62,7 +64,20 @@ function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
 }
 function contact(req,res) {
-  redis.lpush("contactList", JSON.stringify(req.body))
+  var uniqueID = crypto.randomBytes(128).toString('base64')
+  let tz = new Date().getTimezoneOffset()/60
+  let sign = (tz < 0) ? '+':'-'
+  redis.hsetnx("contactList", uniqueID, JSON.stringify({
+    uid: uniqueID,
+    firstname: req.body.firstName,
+    email: req.body.email,
+    body: req.body.body,
+    subject: req.body.subject,
+    timezone: parseInt(sign + tz),
+    time: new Date( Date.now() ).getTime(),
+    platform: req.headers['user-agent'],
+    deleted: false
+  }))
   res.end("delete")
 }
 function admin(req, res) {
@@ -73,20 +88,10 @@ function admin(req, res) {
 }
 function login(req, res){
   if (req.body.password === env.password ) {
-    redis.lrange("contactList", 0, 0)
-    .then((results)=>{
-      var newArray = []
-      _.forEach(results, function(value,key){
-        value = JSON.parse(value)
-        newArray.push(value)
-      })
-        res.render('admin.html', {
-          title: 'Admin - iOS Haven',
-          contactdata: newArray,
-          showlogin: false
-        })
+    res.render('admin.html', {
+      title: 'Admin - iOS Haven',
+      showlogin: false
     })
-
   }
 }
 
@@ -96,5 +101,26 @@ function donate(req, res) {
     "hosted_button_id": "E8QZHGDDUQAGY",
   }).then((r) => {
     res.send(r.data)
+  })
+}
+
+function getContacts(req, res){
+  redis.hgetall("contactList")
+  .then((results)=>{
+    var newObject = {}
+    _.forEach(results, function(value,key){
+      value = JSON.parse(value)
+      newObject[value.uid] = value
+    })
+    res.send(newObject)
+  })
+}
+
+function dropContact(req, res){
+  var newObject = req.body
+  newObject.deleted = true
+  redis.hset('contactList', req.body.uid, JSON.stringify(newObject))
+  .then(r=>{
+    res.end('ended')
   })
 }
