@@ -16,14 +16,14 @@ nunjucks.configure('views', {
 })
 
 app.use(express.static('assets'))
-app.use(express.static('favicomatic'))
+app.use(express.static('favicomatic'));
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-<<<<<<< HEAD
-app.set("trust proxy",["loopback", "linklocal", "uniquelocal"])
-=======
 
->>>>>>> master
+app.set("trust proxy",["loopback", "linklocal", "uniquelocal"])
+
+
+
 
 var env = require('./env.json')
 
@@ -58,18 +58,17 @@ function jailbreaks(req, res) {
 function credits(req, res) {
   res.render('credits.html', {title: 'Credits - iOS Haven'})
 }
-<<<<<<< HEAD
+
 function test(req, res, next) {
   // var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
   res.send(req.ips)
   next()
-=======
+
 function ips(req, res) {
   res.setHeader('Content-Type', 'application/json');
   redis.lpush('ips', JSON.stringify(req.headers))
   res.redirect('/')
   // res.send(JSON.stringify(req.headers))
->>>>>>> master
 }
 function help(req, res) {
   res.render('help.html', {title: 'Help - iOS Haven'})
