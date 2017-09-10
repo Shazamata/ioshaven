@@ -3,6 +3,9 @@
 window.Vue = require('vue')
 window._ = require('lodash');
 window.axios = require('axios');
+const $env = require('../../env.json')
+
+
 
 $(document).ready(function (){
   if (location.pathname == "/") $("body").addClass("landing")
@@ -18,6 +21,10 @@ Vue.component('search', require('./components/searchbar.vue'))
 Vue.component('contact', require('./components/contact.vue'))
 Vue.component('popup', require('./components/popup.vue'))
 Vue.component('contactitem', require('./components/contactItem.vue'))
+
+Vue.config.devtools = (process.NODE_ENV === 'development')
+Vue.config.debug = (process.NODE_ENV === 'development')
+Vue.config.silent = !(process.NODE_ENV === 'development')
 
 const app = new Vue({
   el: '#app',
@@ -54,28 +61,5 @@ const app = new Vue({
 
       //  console.log(testing);
     },
-  }
-})
-
-
-const devops = new Vue({
-  el: '#devops',
-  data: {
-    contacts: null,
-    cron: '',
-    contactsEmpty: true,
-  },
-  mounted() {
-    this.cron = setInterval(()=> {
-      axios.post('/get/contacts')
-      .then((result) => {
-        this.contacts = result.data
-        this.contactsEmpty = true
-        _.forEach(this.contacts,  (c) => {
-          if (c.deleted === false) this.contactsEmpty = false
-        })
-      })
-    }, 1000)
-
   }
 })
