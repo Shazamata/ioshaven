@@ -18,7 +18,7 @@
   {
     "title": "Snapchat++",
     "image": "/app-icons/snapchat.png",
-    "version": "10.16.1",
+    "version": "10.17",
     "desc": "Snapchat++ features a lot like saving snaps, custom filters, and more!",
     "dl": "http://clkmein.com/q2Im0U",
     "signed": "http://clkmein.com/q2Fi0Y"
@@ -26,7 +26,7 @@
   {
     "title": "Phantom for Snapchat",
     "image": "/app-icons/snapchat.png",
-    "version": "10.16.1 / 2.3",
+    "version": "10.17",
     "desc": "Phantom for Snapchat has features like saving snaps, custom filters, and more! This version includes Phantom Lite v2.3.",
     "dl": "http://clkmein.com/q2FhPd",
     "signed": "http://clkmein.com/q2FiAJ"
@@ -34,7 +34,7 @@
   {
       "title": "Snapchat SCOthman",
       "image": "/app-icons/scothman.png",
-      "version": "10.16.1",
+      "version": "10.17",
       "desc": "Snapchat SCOthman includes features like saving snaps, custom filters, and more!",
       "dl": "http://clkmein.com/q2InhR",
       "signed": "http://clkmein.com/q2FiLw"
@@ -49,7 +49,7 @@
   {
         "title": "Twitter++",
         "image": "/app-icons/twitter.png",
-        "version": "7.5.1",
+        "version": "7.7",
         "desc": "Upgrade your Twitter expierence with Twitter++.",
         "dl": "http://clkmein.com/q2Imh4",
         "signed": "http://clkmein.com/q2FiNp"
@@ -57,7 +57,7 @@
   {
         "title": "Youtube++",
         "image": "/app-icons/youtube.png",
-        "version": "12.34",
+        "version": "12.35",
         "desc": "Upgrade your YouTube expierence with YouTube++. Obtain features like no ads and more!",
         "dl": "http://destyy.com/q3YfDa",
         "signed": "http://clkmein.com/q2Fi5W"
@@ -568,7 +568,7 @@
   {
     "title": "Saavn++",
     "image": "/app-icons/saavn.png",
-    "version": "5.9",
+    "version": "5.10",
     "desc": "Listen to your favorite hindi songs for free.",
     "dl": "http://ceesty.com/q4vl3z"
   }
